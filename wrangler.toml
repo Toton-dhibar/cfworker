@@ -12,7 +12,7 @@ env = "production"
 
 # If using custom domain
 [[routes]]
-pattern = "vpn.yourdomain.com"
+pattern = "vpn.sdbuild.me"
 custom_domain = true
 
 # OR for workers.dev domain
