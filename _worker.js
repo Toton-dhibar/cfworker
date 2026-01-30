@@ -5640,6 +5640,12 @@
     }
 
     function generateXhttpLinksFromSource(list, user, workerDomain, echConfig = null) {
+        
+        const CF_HTTP_PORTS = [80, 8080, 8880, 2052, 2082, 2086, 2095];
+        const CF_HTTPS_PORTS = [443, 2053, 2083, 2087, 2096, 8443];
+        
+        const defaultHttpsPorts = [443];
+        const defaultHttpPorts = disableNonTLS ? [] : [80];
         const links = [];
         const nodePath = user.substring(0, 8);
         
@@ -5649,29 +5655,74 @@
                 nodeNameBase = `${nodeNameBase}-${item.colo.trim()}`;
             }
             const safeIP = item.ip.includes(':') ? `[${item.ip}]` : item.ip;
-            const port = item.port || 443;
             
-            const wsNodeName = `${nodeNameBase}-${port}-xhttp`;
-            const params = new URLSearchParams({
-                encryption: 'none',
-                security: 'tls',
-                sni: workerDomain,
-                fp: 'chrome',
-                type: 'xhttp',
-                host: workerDomain,
-                path: `/${nodePath}`,
-                mode: 'stream-one'
-            });
+            let portsToGenerate = [];
             
-            // If ECH is enabled, add ech parameter (ECH needs to masquerade as Chrome browser)
-            if (enableECH) {
-                const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
-                const echDomain = customECHDomain || 'cloudflare-ech.com';
-                params.set('alpn', 'h3,h2,http/1.1');
-                params.set('ech', `${echDomain}+${dnsServer}`);
+            if (item.port) {
+                
+                const port = item.port;
+                
+                if (CF_HTTPS_PORTS.includes(port)) {
+                    
+                    portsToGenerate.push({ port: port, tls: true });
+                } else if (CF_HTTP_PORTS.includes(port)) {
+                    
+                    if (!disableNonTLS) {
+                        portsToGenerate.push({ port: port, tls: false });
+                    }
+                } else {
+                    
+                    portsToGenerate.push({ port: port, tls: true });
+                }
+            } else {
+                
+                defaultHttpsPorts.forEach(port => {
+                    portsToGenerate.push({ port: port, tls: true });
+                });
+                defaultHttpPorts.forEach(port => {
+                    portsToGenerate.push({ port: port, tls: false });
+                });
             }
             
-            links.push(`vless://${user}@${safeIP}:${port}?${params.toString()}#${encodeURIComponent(wsNodeName)}`);
+            portsToGenerate.forEach(({ port, tls }) => {
+                if (tls) {
+                    
+                    const wsNodeName = `${nodeNameBase}-${port}-xhttp-TLS`;
+                    const params = new URLSearchParams({
+                        encryption: 'none',
+                        security: 'tls',
+                        sni: workerDomain,
+                        fp: 'chrome',
+                        type: 'xhttp',
+                        host: workerDomain,
+                        path: `/${nodePath}`,
+                        mode: 'stream-one'
+                    });
+                    
+                    // If ECH is enabled, add ech parameter (ECH needs to masquerade as Chrome browser)
+                    if (enableECH) {
+                        const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
+                        const echDomain = customECHDomain || 'cloudflare-ech.com';
+                        params.set('alpn', 'h3,h2,http/1.1');
+                        params.set('ech', `${echDomain}+${dnsServer}`);
+                    }
+                    
+                    links.push(`vless://${user}@${safeIP}:${port}?${params.toString()}#${encodeURIComponent(wsNodeName)}`);
+                } else {
+                    
+                    const wsNodeName = `${nodeNameBase}-${port}-xhttp`;
+                    const params = new URLSearchParams({
+                        encryption: 'none',
+                        security: 'none',
+                        type: 'xhttp',
+                        host: workerDomain,
+                        path: `/${nodePath}`,
+                        mode: 'stream-one'
+                    });
+                    
+                    links.push(`vless://${user}@${safeIP}:${port}?${params.toString()}#${encodeURIComponent(wsNodeName)}`);
+                }
+            });
         });
         
         return links;
