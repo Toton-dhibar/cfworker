@@ -5165,43 +5165,47 @@
         return r;
     }
 
-function get_xhttp_buffer(size) {
-    return new Uint8Array(new ArrayBuffer(size || XHTTP_BUFFER_SIZE));
-}
-
-async function read_xhttp_at_least(reader, size, buffer) {
-    if (typeof reader.readAtLeast === 'function') {
-        return reader.readAtLeast(size, buffer);
+    function get_xhttp_buffer(size) {
+        return new Uint8Array(new ArrayBuffer(size || XHTTP_BUFFER_SIZE));
     }
-    
-    let out = buffer && buffer.length >= size ? buffer : get_xhttp_buffer(size);
-    let total = 0;
-    let done = false;
-    
-    while (total < size && !done) {
-        const view = out.subarray(total);
-        const result = await reader.read(view);
-        done = result.done;
-        if (result.value) {
-            total += result.value.byteLength;
+
+    async function read_xhttp_at_least(reader, size, buffer) {
+        if (typeof reader.readAtLeast === 'function') {
+            return reader.readAtLeast(size, buffer);
         }
-        if (done) {
-            break;
+        
+        let out = buffer && buffer.length >= size ? buffer : get_xhttp_buffer(size);
+        let total = 0;
+        let done = false;
+        
+        while (total < size && !done) {
+            const view = out.subarray(total);
+            const result = await reader.read(view);
+            done = result.done;
+            if (result.value) {
+                total += result.value.byteLength;
+            }
+            if (done) {
+                break;
+            }
         }
+        
+        return { value: out.subarray(0, total), done };
     }
-    
-    return { value: out.subarray(0, total), done };
-}
 
-async function read_xhttp_header(readable, uuid_str) {
-    const reader = readable.getReader({ mode: 'byob' });
+    async function read_xhttp_header(readable, uuid_str) {
+        const reader = readable.getReader({ mode: 'byob' });
 
-    try {
-        let r = await read_xhttp_at_least(reader, 1 + 16 + 1, get_xhttp_buffer());
-        let rlen = 0;
-        let idx = 0;
-        let cache = r.value;
-        rlen += r.value.length;
+        try {
+            let r = await read_xhttp_at_least(reader, 1 + 16 + 1, get_xhttp_buffer());
+            let rlen = 0;
+            let idx = 0;
+            let cache = r.value;
+            rlen += r.value.length;
+
+            if (rlen < 1 + 16 + 1) {
+                return `header too short`;
+            }
 
             const version = cache[0];
             const id = cache.slice(1, 1 + 16);
@@ -5213,14 +5217,17 @@ async function read_xhttp_header(readable, uuid_str) {
             const addr_plus1 = 1 + 16 + 1 + pb_len + 1 + 2 + 1;
 
             if (addr_plus1 + 1 > rlen) {
-            if (r.done) {
-                return `header too short`;
+                if (r.done) {
+                    return `header too short`;
+                }
+                idx = addr_plus1 + 1 - rlen;
+                r = await read_xhttp_at_least(reader, idx, get_xhttp_buffer());
+                rlen += r.value.length;
+                cache = concat_typed_arrays(cache, r.value);
+                if (r.done && rlen < addr_plus1 + 1) {
+                    return `header too short`;
+                }
             }
-            idx = addr_plus1 + 1 - rlen;
-            r = await read_xhttp_at_least(reader, idx, get_xhttp_buffer());
-            rlen += r.value.length;
-            cache = concat_typed_arrays(cache, r.value);
-        }
 
             const cmd = cache[1 + 16 + 1 + pb_len];
             if (cmd !== 1) {
@@ -5243,13 +5250,16 @@ async function read_xhttp_header(readable, uuid_str) {
 
             idx = header_len - rlen;
             if (idx > 0) {
-            if (r.done) {
-                return `read address failed`;
+                if (r.done) {
+                    return `read address failed`;
+                }
+                r = await read_xhttp_at_least(reader, idx, get_xhttp_buffer());
+                rlen += r.value.length;
+                cache = concat_typed_arrays(cache, r.value);
+                if (r.done && rlen < header_len) {
+                    return `read address failed`;
+                }
             }
-            r = await read_xhttp_at_least(reader, idx, get_xhttp_buffer());
-            rlen += r.value.length;
-            cache = concat_typed_arrays(cache, r.value);
-        }
 
             let hostname = '';
             idx = addr_plus1;
