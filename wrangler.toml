@@ -1,0 +1,18 @@
+name = "vless-vpn"
+type = "javascript"
+account_id = "your_account_id_here"
+workers_dev = true
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[env.production]
+name = "vless-vpn-production"
+zone_id = "your_zone_id_here"
+routes = [
+  { pattern = "vpn.sdbuild.me", custom_domain = true }
+]
+
+[vars]
+# Add user UUIDs here or use Secrets
+# USER_UUID_1 = "your-uuid-here"
+# USER_EMAIL_1 = "user1@example.com"
