@@ -1,5 +1,5 @@
-    // CFnew - 终端 v2.9.3
-    // 版本: v2.9.3
+    // CFnew - Terminal v2.9.3
+    // Version: v2.9.3
     import { connect } from 'cloudflare:sockets';
     let at = '351c9981-04b6-4103-aa4b-864aa9c91469';
     let fallbackAddress = '';
@@ -20,18 +20,18 @@
     let et = false; 
     let ex = true;  
     let tp = '';
-    // 启用ECH功能（true启用，false禁用）
+    // Enable ECH feature (true to enable, false to disable)
     let enableECH = false;  
-    // 自定义DNS服务器（默认：https://dns.joeyblog.eu.org/joeyblog）
+    // Custom DNS server (default: https://dns.joeyblog.eu.org/joeyblog)
     let customDNS = 'https://dns.joeyblog.eu.org/joeyblog';
-    // 自定义ECH域名（默认：cloudflare-ech.com）
+    // Custom ECH domain (default: cloudflare-ech.com)
     let customECHDomain = 'cloudflare-ech.com';
 
     let scu = 'https://url.v1.mk/sub';  
-    // 远程配置URL（硬编码）
+    // Remote config URL (hardcoded)
     const remoteConfigUrl = 'https://raw.githubusercontent.com/byJoey/test/refs/heads/main/tist.ini';
 
-    let epd = false;   // 优选域名默认关闭
+    let epd = false;   // Preferred domain disabled by default
     let epi = true;       
     let egi = true;          
 
@@ -39,17 +39,17 @@
     let kvConfig = {};
 
     const regionMapping = {
-        'US': ['🇺🇸 美国', 'US', 'United States'],
-        'SG': ['🇸🇬 新加坡', 'SG', 'Singapore'],
-        'JP': ['🇯🇵 日本', 'JP', 'Japan'],
-        'KR': ['🇰🇷 韩国', 'KR', 'South Korea'],
-        'DE': ['🇩🇪 德国', 'DE', 'Germany'],
-        'SE': ['🇸🇪 瑞典', 'SE', 'Sweden'],
-        'NL': ['🇳🇱 荷兰', 'NL', 'Netherlands'],
-        'FI': ['🇫🇮 芬兰', 'FI', 'Finland'],
-        'GB': ['🇬🇧 英国', 'GB', 'United Kingdom'],
-        'Oracle': ['甲骨文', 'Oracle'],
-        'DigitalOcean': ['数码海', 'DigitalOcean'],
+        'US': ['🇺🇸 United States', 'US', 'United States'],
+        'SG': ['🇸🇬 Singapore', 'SG', 'Singapore'],
+        'JP': ['🇯🇵 Japan', 'JP', 'Japan'],
+        'KR': ['🇰🇷 South Korea', 'KR', 'South Korea'],
+        'DE': ['🇩🇪 Germany', 'DE', 'Germany'],
+        'SE': ['🇸🇪 Sweden', 'SE', 'Sweden'],
+        'NL': ['🇳🇱 Netherlands', 'NL', 'Netherlands'],
+        'FI': ['🇫🇮 Finland', 'FI', 'Finland'],
+        'GB': ['🇬🇧 United Kingdom', 'GB', 'United Kingdom'],
+        'Oracle': ['Oracle', 'Oracle'],
+        'DigitalOcean': ['DigitalOcean', 'DigitalOcean'],
         'Vultr': ['Vultr', 'Vultr'],
         'Multacom': ['Multacom', 'Multacom']
     };
@@ -370,7 +370,7 @@
                             const { address, port } = parseAddressAndPort(addressPart);
                             
                             if (!nodeName) {
-                                nodeName = '自定义优选-' + address + (port ? ':' + port : '');
+                                nodeName = 'Custom Preferred-' + address + (port ? ':' + port : '');
                             }
                             
                             if (isValidIP(address)) {
@@ -447,7 +447,7 @@
                     enableECH = echControl === 'yes' || echControl === true || echControl === 'true';
                 }
                 
-                // 加载自定义DNS和ECH域名配置
+                // Load custom DNS and ECH domain configuration
                 const customDNSValue = getConfigValue('customDNS', '');
                 if (customDNSValue && customDNSValue.trim()) {
                     customDNS = customDNSValue.trim();
@@ -458,11 +458,11 @@
                     customECHDomain = customECHDomainValue.trim();
                 }
                 
-                // 如果启用了ECH，自动启用仅TLS模式（避免80端口干扰）
-                // ECH需要TLS才能工作，所以必须禁用非TLS节点
+                // If ECH is enabled, automatically enable TLS-only mode (avoid port 80 interference)
+                // ECH requires TLS to work, so non-TLS nodes must be disabled
                 if (enableECH) {
                     disableNonTLS = true;
-                    // 检查 KV 中是否有 dkby: yes，没有就直接写入
+                    // Check if KV has dkby: yes, if not write directly
                     const currentDkby = getConfigValue('dkby', '');
                     if (currentDkby !== 'yes') {
                         await setConfigValue('dkby', 'yes');
@@ -507,14 +507,14 @@
                         if (isValid) {
                             return await handleConfigAPI(request);
                         } else {
-                            return new Response(JSON.stringify({ error: '路径验证失败' }), { 
+                            return new Response(JSON.stringify({ error: 'Path validation failed' }), { 
                                 status: 403,
                                 headers: { 'Content-Type': 'application/json' }
                             });
                         }
                     }
                     
-                    return new Response(JSON.stringify({ error: '无效的API路径' }), { 
+                    return new Response(JSON.stringify({ error: 'Invalid API path' }), { 
                         status: 404,
                         headers: { 'Content-Type': 'application/json' }
                     });
@@ -541,14 +541,14 @@
                     if (isValid) {
                             return await handlePreferredIPsAPI(request);
                     } else {
-                        return new Response(JSON.stringify({ error: '路径验证失败' }), { 
+                        return new Response(JSON.stringify({ error: 'Path validation failed' }), { 
                                 status: 403,
                                 headers: { 'Content-Type': 'application/json' }
                             });
                         }
                     }
                 
-                    return new Response(JSON.stringify({ error: '无效的API路径' }), { 
+                    return new Response(JSON.stringify({ error: 'Invalid API path' }), { 
                         status: 404,
                         headers: { 'Content-Type': 'application/json' }
                     });
@@ -576,7 +576,7 @@
                 }
                 
                 if (request.method === 'GET') {
-                    // 处理 /{UUID}/region 或 /{自定义路径}/region
+                    // Process /{UUID}/region or /{Custompath}/region
                     if (url.pathname.endsWith('/region')) {
                         const pathParts = url.pathname.split('/').filter(p => p);
                         
@@ -585,11 +585,11 @@
                             let isValid = false;
                             
                             if (cp && cp.trim()) {
-                                // 使用自定义路径
+                                // Use custom path
                                 const cleanCustomPath = cp.trim().startsWith('/') ? cp.trim().substring(1) : cp.trim();
                                 isValid = (pathIdentifier === cleanCustomPath);
                             } else {
-                                // 使用UUID路径
+                                // Use UUID path
                                 isValid = (isValidFormat(pathIdentifier) && pathIdentifier === at);
                             }
                             
@@ -600,7 +600,7 @@
                                 if (manualRegion && manualRegion.trim()) {
                                     return new Response(JSON.stringify({
                                         region: manualRegion.trim().toUpperCase(),
-                                        detectionMethod: '手动指定地区',
+                                        detectionMethod: 'Manually specified region',
                                         manualRegion: manualRegion.trim().toUpperCase(),
                                         timestamp: new Date().toISOString()
                                     }), {
@@ -609,7 +609,7 @@
                                 } else if (ci && ci.trim()) {
                                     return new Response(JSON.stringify({
                                         region: 'CUSTOM',
-                                        detectionMethod: '自定义ProxyIP模式', ci: ci,
+                                        detectionMethod: 'Custom ProxyIP mode', ci: ci,
                                         timestamp: new Date().toISOString()
                                     }), {
                                         headers: { 'Content-Type': 'application/json' }
@@ -618,7 +618,7 @@
                                     const detectedRegion = await detectWorkerRegion(request);
                                     return new Response(JSON.stringify({
                                         region: detectedRegion,
-                                        detectionMethod: 'API检测',
+                                        detectionMethod: 'API detection',
                                         timestamp: new Date().toISOString()
                                     }), {
                                         headers: { 'Content-Type': 'application/json' }
@@ -626,8 +626,8 @@
                                 }
                             } else {
                                 return new Response(JSON.stringify({ 
-                                    error: '访问被拒绝',
-                                    message: '路径验证失败'
+                                    error: 'Access denied',
+                                    message: 'Path validation failed'
                                 }), { 
                                     status: 403,
                                     headers: { 'Content-Type': 'application/json' }
@@ -636,7 +636,7 @@
                         }
                     }
                     
-                    // 处理 /{UUID}/test-api 或 /{自定义路径}/test-api
+                    // Process /{UUID}/test-api or /{Custompath}/test-api
                     if (url.pathname.endsWith('/test-api')) {
                         const pathParts = url.pathname.split('/').filter(p => p);
                         
@@ -645,11 +645,11 @@
                             let isValid = false;
                             
                             if (cp && cp.trim()) {
-                                // 使用自定义路径
+                                // Use custom path
                                 const cleanCustomPath = cp.trim().startsWith('/') ? cp.trim().substring(1) : cp.trim();
                                 isValid = (pathIdentifier === cleanCustomPath);
                             } else {
-                                // 使用UUID路径
+                                // Use UUID path
                                 isValid = (isValidFormat(pathIdentifier) && pathIdentifier === at);
                             }
                             
@@ -658,7 +658,7 @@
                                     const testRegion = await detectWorkerRegion(request);
                                     return new Response(JSON.stringify({
                                         detectedRegion: testRegion,
-                                        message: 'API测试完成',
+                                        message: 'API test completed',
                                         timestamp: new Date().toISOString()
                                     }), {
                                         headers: { 'Content-Type': 'application/json' }
@@ -666,7 +666,7 @@
                                 } catch (error) {
                                     return new Response(JSON.stringify({
                                         error: error.message,
-                                        message: 'API测试失败'
+                                        message: 'API test failed'
                                     }), {
                                         status: 500,
                                         headers: { 'Content-Type': 'application/json' }
@@ -674,8 +674,8 @@
                                 }
                             } else {
                                 return new Response(JSON.stringify({ 
-                                    error: '访问被拒绝',
-                                    message: '路径验证失败'
+                                    error: 'Access denied',
+                                    message: 'Path validation failed'
                                 }), { 
                                     status: 403,
                                     headers: { 'Content-Type': 'application/json' }
@@ -685,11 +685,11 @@
                     }
                     
                     if (url.pathname === '/') {
-                        // 检查是否有自定义首页URL配置
+                        // Check if custom homepage URL is configured
                         const customHomepage = getConfigValue('homepage', env.homepage || env.HOMEPAGE);
                         if (customHomepage && customHomepage.trim()) {
                             try {
-                                // 从自定义URL获取内容
+                                // Get content from custom URL
                                 const homepageResponse = await fetch(customHomepage.trim(), {
                                     method: 'GET',
                                     headers: {
@@ -701,11 +701,11 @@
                                 });
                                 
                                 if (homepageResponse.ok) {
-                                    // 获取响应内容
+                                    // Get response content
                                     const contentType = homepageResponse.headers.get('Content-Type') || 'text/html; charset=utf-8';
                                     const content = await homepageResponse.text();
                                     
-                                    // 返回自定义首页内容
+                                    // Return custom homepage content
                                     return new Response(content, {
                                         status: homepageResponse.status,
                                         headers: {
@@ -715,11 +715,11 @@
                                     });
                                 }
                             } catch (error) {
-                                // 如果获取失败，继续使用默认终端页面
-                                console.error('获取自定义首页失败:', error);
+                                // If fetch fails, continue with default terminal page
+                                console.error('Failed to get custom homepage:', error);
                             }
                         }
-                        // 优先检查Cookie中的语言设置
+                        // Check language setting in Cookie first
                         const cookieHeader = request.headers.get('Cookie') || '';
                         let langFromCookie = null;
                         if (cookieHeader) {
@@ -739,7 +739,7 @@
                         } else if (langFromCookie === 'zh' || langFromCookie === 'zh-CN') {
                             isFarsi = false;
                         } else {
-                            // 如果没有Cookie，使用浏览器语言检测
+                            // If no Cookie, use browser language detection
                             const acceptLanguage = request.headers.get('Accept-Language') || '';
                             const browserLang = acceptLanguage.split(',')[0].split('-')[0].toLowerCase();
                             isFarsi = browserLang === 'fa' || acceptLanguage.includes('fa-IR') || acceptLanguage.includes('fa');
@@ -750,21 +750,21 @@
                             
                             const translations = {
                                 zh: {
-                                    title: '终端',
-                                    terminal: '终端',
-                                    congratulations: '恭喜你来到这',
-                                    enterU: '请输入你U变量的值',
-                                    enterD: '请输入你D变量的值',
-                                    command: '命令: connect [',
+                                    title: 'Terminal',
+                                    terminal: 'Terminal',
+                                    congratulations: 'Congratulations, you have arrived',
+                                    enterU: 'Please enter your U variable value',
+                                    enterD: 'Please enter your D variable value',
+                                    command: 'Command: connect [',
                                     uuid: 'UUID',
                                     path: 'PATH',
-                                    inputU: '输入U变量的内容并且回车...',
-                                    inputD: '输入D变量的内容并且回车...',
-                                    connecting: '正在连接...',
-                                    invading: '正在入侵...',
-                                    success: '连接成功！返回结果...',
-                                    error: '错误: 无效的UUID格式',
-                                    reenter: '请重新输入有效的UUID'
+                                    inputU: 'Enter U variable content and press Enter...',
+                                    inputD: 'Enter D variable content and press Enter...',
+                                    connecting: 'Connecting...',
+                                    invading: 'Invading...',
+                                    success: 'Connection successful! Returning results...',
+                                    error: 'Error: Invalid UUID format',
+                                    reenter: 'Please re-enter a valid UUID'
                                 },
                                 fa: {
                                     title: 'ترمینال',
@@ -1047,11 +1047,11 @@
                         
                         const translations = {
                             zh: {
-                                connecting: '正在连接...',
-                                invading: '正在入侵...',
-                                success: '连接成功！返回结果...',
-                                error: '错误: 无效的UUID格式',
-                                reenter: '请重新输入有效的UUID'
+                                connecting: 'Connecting...',
+                                invading: 'Invading...',
+                                success: 'Connection successful! Returning results...',
+                                error: 'Error: Invalid UUID format',
+                                reenter: 'Please re-enter a valid UUID'
                             },
                             fa: {
                                 connecting: 'در حال اتصال...',
@@ -1095,15 +1095,15 @@
                 
                 function changeLanguage(lang) {
                     localStorage.setItem('preferredLanguage', lang);
-                    // 设置Cookie（有效期1年）
+                    // Set Cookie (valid for 1 year)
                     const expiryDate = new Date();
                     expiryDate.setFullYear(expiryDate.getFullYear() + 1);
                     document.cookie = 'preferredLanguage=' + lang + '; path=/; expires=' + expiryDate.toUTCString() + '; SameSite=Lax';
-                    // 刷新页面，不使用URL参数
+                    // Refresh page without URL parameters
                     window.location.reload();
                 }
                 
-                // 页面加载时检查 localStorage 和 Cookie，并清理URL参数
+                // Check localStorage and Cookie on page load, and clean URL parameters
                 window.addEventListener('DOMContentLoaded', function() {
                     function getCookie(name) {
                         const value = '; ' + document.cookie;
@@ -1116,22 +1116,22 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     const urlLang = urlParams.get('lang');
                     
-                    // 如果URL中有语言参数，移除它并设置Cookie
+                    // If URL has language parameter, remove it and set Cookie
                     if (urlLang) {
                         const currentUrl = new URL(window.location.href);
                         currentUrl.searchParams.delete('lang');
                         const newUrl = currentUrl.toString();
                         
-                        // 设置Cookie
+                        // Set Cookie
                         const expiryDate = new Date();
                         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
                         document.cookie = 'preferredLanguage=' + urlLang + '; path=/; expires=' + expiryDate.toUTCString() + '; SameSite=Lax';
                         localStorage.setItem('preferredLanguage', urlLang);
                         
-                        // 使用history API移除URL参数，不刷新页面
+                        // Remove URL parameters using history API without refreshing page
                         window.history.replaceState({}, '', newUrl);
                     } else if (savedLang) {
-                        // 如果localStorage中有但Cookie中没有，同步到Cookie
+                        // If in localStorage but not in Cookie, sync to Cookie
                         const expiryDate = new Date();
                         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
                         document.cookie = 'preferredLanguage=' + savedLang + '; path=/; expires=' + expiryDate.toUTCString() + '; SameSite=Lax';
@@ -1170,8 +1170,8 @@
                         const user = url.pathname.replace(/\/$/, '').replace('/sub', '').substring(1);
                         if (isValidFormat(user)) {
                             return new Response(JSON.stringify({ 
-                                error: '访问被拒绝',
-                                message: '当前 Worker 已启用自定义路径模式，UUID 访问已禁用'
+                                error: 'Access denied',
+                                message: 'Current Worker has enabled Custom path mode, UUID access is disabled'
                             }), { 
                                 status: 403,
                                 headers: { 'Content-Type': 'application/json' }
@@ -1186,7 +1186,7 @@
                             if (user === at) {
                                 return await handleSubscriptionPage(request, user);
                             } else {
-                                return new Response(JSON.stringify({ error: 'UUID错误 请注意变量名称是u不是uuid' }), { 
+                                return new Response(JSON.stringify({ error: 'UUID error - Please note the variable name is u not uuid' }), { 
                                     status: 403,
                                     headers: { 'Content-Type': 'application/json' }
                                 });
@@ -1201,7 +1201,7 @@
                                 if (user === at) {
                                     return await handleSubscriptionRequest(request, user, url);
                                 } else {
-                                    return new Response(JSON.stringify({ error: 'UUID错误' }), { 
+                                    return new Response(JSON.stringify({ error: 'UUID error' }), { 
                                         status: 403,
                                         headers: { 'Content-Type': 'application/json' }
                                     });
@@ -1228,10 +1228,10 @@
         return btoa(links.join('\n'));
     }
 
-    // 解析 VLESS/Trojan 链接并生成 Clash 节点配置
+    // Parse VLESS/Trojan link and generate Clash node configuration
     function parseLinkToClashNode(link) {
         try {
-            // 解析 VLESS 链接
+            // Parse VLESS link
             if (link.startsWith('vless://')) {
                 const url = new URL(link);
                 const name = decodeURIComponent(url.hash.substring(1));
@@ -1286,7 +1286,7 @@
                 return node;
             }
             
-            // 解析 Trojan 链接
+            // Parse Trojan link
             if (link.startsWith('trojan://')) {
                 const url = new URL(link);
                 const name = decodeURIComponent(url.hash.substring(1));
@@ -1339,9 +1339,9 @@
         return null;
     }
 
-    // 生成 Clash 配置
+    // Generate Clash configuration
     async function generateClashConfig(links, request, user) {
-        // 先通过订阅转换服务获取 Clash 配置
+        // First get Clash configuration through subscription conversion service
         const subscriptionUrl = new URL(request.url);
         subscriptionUrl.pathname = subscriptionUrl.pathname.replace(/\/sub$/, '') + '/sub';
         subscriptionUrl.searchParams.set('target', 'base64');
@@ -1351,30 +1351,30 @@
         try {
             const response = await fetch(converterUrl);
             if (!response.ok) {
-                throw new Error('订阅转换服务失败');
+                throw new Error('Subscription conversion service failed');
             }
             
             let clashConfig = await response.text();
             
-            // 如果 ECH 开启，为所有节点添加 ECH 参数
+            // If ECH is enabled, add ECH parameters to all nodes
             if (enableECH) {
-                // 处理单行格式的节点：  - {name: ..., server: ..., ...}
-                // 需要正确处理嵌套的花括号（如 ws-opts: {path: "...", headers: {Host: ...}}）
+                // Process single-line format nodes：  - {name: ..., server: ..., ...}
+                // Need to correctly process nested braces（such as ws-opts: {path: "...", headers: {Host: ...}}）
                 clashConfig = clashConfig.split('\n').map(line => {
-                    // 检查是否是节点行（以 "  - {" 开头，且包含 name: 和 server:）
+                    // Check if it is a node line（with "  - {" Start with，and contains name: and server:）
                     if (/^\s*-\s*\{/.test(line) && line.includes('name:') && line.includes('server:')) {
-                        // 检查是否已经有 ech-opts
+                        // Check if ech-opts already exists
                         if (line.includes('ech-opts')) {
-                            return line; // 已有 ech-opts，不修改
+                            return line; // Already has ech-opts, no modification
                         }
-                        // 找到最后一个 } 的位置（从右往左查找，处理嵌套花括号）
+                        // Find the position of the last } (search from right to left, process nested braces)
                         const lastBraceIndex = line.lastIndexOf('}');
                         if (lastBraceIndex > 0) {
-                            // 检查最后一个 } 之前是否有内容，确保格式正确
+                            // Check if there is content before the last }, ensure format is correct
                             const beforeBrace = line.substring(0, lastBraceIndex).trim();
                             if (beforeBrace.length > 0) {
-                                // 在最后一个 } 之前添加 , ech-opts: {enable: true, query-server-name: ...}
-                                // 确保在逗号前有空格
+                                // Add , ech-opts before the last }: {enable: true, query-server-name: ...}
+                                // Ensure space before comma
                                 const echDomain = customECHDomain || 'cloudflare-ech.com';
                                 const needsComma = !beforeBrace.endsWith(',') && !beforeBrace.endsWith('{');
                                 return line.substring(0, lastBraceIndex) + (needsComma ? ', ' : ' ') + `ech-opts: {enable: true, query-server-name: ${echDomain}}` + line.substring(lastBraceIndex);
@@ -1384,31 +1384,31 @@
                     return line;
                 }).join('\n');
                 
-                // 处理多行格式的节点（如果存在）
-                // 只处理单行格式，多行格式由订阅转换服务处理，不需要额外修改
-                // 如果订阅转换服务返回多行格式，通常已经是正确的格式
+                // Process multi-line format nodes (if exists)
+                // Only process single-line format, multi-line format is processed by subscription conversion service, no additional modification needed
+                // If subscription conversion service returns multi-line format, it is usually the correct format
             }
             
-            // 替换 DNS nameserver 为阿里的加密 DNS
+            // Replace DNS nameserver with Alibaba encrypted DNS
             clashConfig = clashConfig.replace(/^(\s*nameserver:\s*\n)((?:\s*-\s*[^\n]+\n)*)/m, (match, header, items) => {
-                // 替换所有 nameserver 项为阿里的加密 DNS
+                // Replace all nameserver entries with Alibaba encrypted DNS
                 const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
                 return header + `    - ${dnsServer}\n`;
             });
             
             return clashConfig;
         } catch (e) {
-            // 如果订阅转换失败，返回错误
-            throw new Error('无法获取 Clash 配置: ' + e.message);
+            // If subscription conversion fails, return error
+            throw new Error('Unable to get Clash configuration: ' + e.message);
         }
     }
 
-    // 全局变量存储ECH调试信息
+    // Global variable storing ECH debug info
     let echDebugInfo = '';
     
     async function fetchECHConfig(domain) {
         if (!enableECH) {
-            echDebugInfo = 'ECH功能已禁用';
+            echDebugInfo = 'ECH feature is disabled';
             return null;
         }
         
@@ -1416,8 +1416,8 @@
         const debugSteps = [];
         
         try {
-            // 优先使用 Google DNS 查询 cloudflare-ech.com 的 ECH 配置
-            debugSteps.push('尝试使用 Google DNS 查询 cloudflare-ech.com...');
+            // Use Google DNS to query cloudflare-ech.com ECH configuration first
+            debugSteps.push('Try to query cloudflare-ech.com using Google DNS...');
             const echDomainUrl = `https://v.recipes/dns/dns.google/dns-query?name=cloudflare-ech.com&type=65`;
             const echResponse = await fetch(echDomainUrl, {
                 headers: {
@@ -1425,49 +1425,49 @@
                 }
             });
             
-            debugSteps.push(`Google DNS 响应状态: ${echResponse.status}`);
+            debugSteps.push(`Google DNS Response status: ${echResponse.status}`);
             
             if (echResponse.ok) {
                 const echData = await echResponse.json();
-                debugSteps.push(`Google DNS 返回数据: ${JSON.stringify(echData).substring(0, 200)}...`);
+                debugSteps.push(`Google DNS Return data: ${JSON.stringify(echData).substring(0, 200)}...`);
                 
                 if (echData.Answer && echData.Answer.length > 0) {
-                    debugSteps.push(`找到 ${echData.Answer.length} 条答案记录`);
+                    debugSteps.push(`Found ${echData.Answer.length} answer records`);
                     for (const answer of echData.Answer) {
                         if (answer.data) {
-                            debugSteps.push(`解析答案数据: ${typeof answer.data}, 长度: ${String(answer.data).length}`);
-                            // Google DNS 返回的数据格式可能不同，需要解析
+                            debugSteps.push(`Parse answer data: ${typeof answer.data}, length: ${String(answer.data).length}`);
+                            // Google DNS Returned data format may be different, needs parsing
                             const dataStr = typeof answer.data === 'string' ? answer.data : JSON.stringify(answer.data);
                             const echMatch = dataStr.match(/ech=([^\s"']+)/);
                             if (echMatch && echMatch[1]) {
-                                echDebugInfo = debugSteps.join('\\n') + '\\n✅ 成功从 Google DNS 获取 ECH 配置';
+                                echDebugInfo = debugSteps.join('\\n') + '\\n✅ Successfully obtained ECH configuration from Google DNS';
                                 return echMatch[1];
                             }
-                            // 如果没有找到，尝试直接使用 data（可能是 base64 编码的）
+                            // If not found, try to use data directly (may be base64 encoded)
                             if (answer.data && !dataStr.includes('ech=')) {
                                 try {
                                     const decoded = atob(answer.data);
-                                    debugSteps.push(`尝试 base64 解码，解码后长度: ${decoded.length}`);
+                                    debugSteps.push(`Try base64 decoding, decoded length: ${decoded.length}`);
                                     const decodedMatch = decoded.match(/ech=([^\s"']+)/);
                                     if (decodedMatch && decodedMatch[1]) {
-                                        echDebugInfo = debugSteps.join('\\n') + '\\n✅ 成功从 Google DNS (base64解码) 获取 ECH 配置';
+                                        echDebugInfo = debugSteps.join('\\n') + '\\n✅ Successfully obtained ECH configuration from Google DNS (base64 decoded)';
                                         return decodedMatch[1];
                                     }
                                 } catch (e) {
-                                    debugSteps.push(`base64 解码失败: ${e.message}`);
+                                    debugSteps.push(`base64 Decoding failed: ${e.message}`);
                                 }
                             }
                         }
                     }
                 } else {
-                    debugSteps.push('Google DNS 未返回答案记录');
+                    debugSteps.push('Google DNS No answer record returned');
                 }
             } else {
-                debugSteps.push(`Google DNS 请求失败: ${echResponse.status}`);
+                debugSteps.push(`Google DNS Request failed: ${echResponse.status}`);
             }
             
-            // 如果 cloudflare-ech.com 查询失败，尝试使用 Google DNS 查询目标域名的 HTTPS 记录
-            debugSteps.push(`尝试使用 Google DNS 查询目标域名 ${domain}...`);
+            // If cloudflare-ech.com query fails, try to use Google DNS to query HTTPS record of target domain
+            debugSteps.push(`Try to query target domain using Google DNS ${domain}...`);
             const dohUrl = `https://v.recipes/dns/dns.google/dns-query?name=${encodeURIComponent(domain)}&type=65`;
             const response = await fetch(dohUrl, {
                 headers: {
@@ -1475,44 +1475,44 @@
                 }
             });
             
-            debugSteps.push(`Google DNS (目标域名) 响应状态: ${response.status}`);
+            debugSteps.push(`Google DNS (target domain) Response status: ${response.status}`);
             
             if (response.ok) {
                 const data = await response.json();
-                debugSteps.push(`Google DNS (目标域名) 返回数据: ${JSON.stringify(data).substring(0, 200)}...`);
+                debugSteps.push(`Google DNS (target domain) Return data: ${JSON.stringify(data).substring(0, 200)}...`);
                 
                 if (data.Answer && data.Answer.length > 0) {
-                    debugSteps.push(`找到 ${data.Answer.length} 条答案记录`);
+                    debugSteps.push(`Found ${data.Answer.length} answer records`);
                     for (const answer of data.Answer) {
                         if (answer.data) {
                             const dataStr = typeof answer.data === 'string' ? answer.data : JSON.stringify(answer.data);
                             const echMatch = dataStr.match(/ech=([^\s"']+)/);
                             if (echMatch && echMatch[1]) {
-                                echDebugInfo = debugSteps.join('\\n') + '\\n✅ 成功从 Google DNS (目标域名) 获取 ECH 配置';
+                                echDebugInfo = debugSteps.join('\\n') + '\\n✅ Successfully obtained ECH configuration from Google DNS (target domain)';
                                 return echMatch[1];
                             }
-                            // 尝试 base64 解码
+                            // Try base64 Decode
                             try {
                                 const decoded = atob(answer.data);
                                 const decodedMatch = decoded.match(/ech=([^\s"']+)/);
                                 if (decodedMatch && decodedMatch[1]) {
-                                    echDebugInfo = debugSteps.join('\\n') + '\\n✅ 成功从 Google DNS (目标域名, base64解码) 获取 ECH 配置';
+                                    echDebugInfo = debugSteps.join('\\n') + '\\n✅ Successfully obtained ECH configuration from Google DNS (target domain, base64 decoded)';
                                     return decodedMatch[1];
                                 }
                             } catch (e) {
-                                debugSteps.push(`base64 解码失败: ${e.message}`);
+                                debugSteps.push(`base64 Decoding failed: ${e.message}`);
                             }
                         }
                     }
                 } else {
-                    debugSteps.push('Google DNS (目标域名) 未返回答案记录');
+                    debugSteps.push('Google DNS (target domain) No answer record returned');
                 }
             } else {
-                debugSteps.push(`Google DNS (目标域名) 请求失败: ${response.status}`);
+                debugSteps.push(`Google DNS (target domain) Request failed: ${response.status}`);
             }
             
-            // 如果 Google DNS 失败，尝试使用 Cloudflare DNS 作为备选
-            debugSteps.push('尝试使用 Cloudflare DNS 作为备选...');
+            // If Google DNS fails, try to use Cloudflare DNS as fallback
+            debugSteps.push('Try to use Cloudflare DNS as fallback...');
             const cfEchUrl = `https://cloudflare-dns.com/dns-query?name=cloudflare-ech.com&type=65`;
             const cfResponse = await fetch(cfEchUrl, {
                 headers: {
@@ -1520,34 +1520,34 @@
                 }
             });
             
-            debugSteps.push(`Cloudflare DNS 响应状态: ${cfResponse.status}`);
+            debugSteps.push(`Cloudflare DNS Response status: ${cfResponse.status}`);
             
             if (cfResponse.ok) {
                 const cfData = await cfResponse.json();
-                debugSteps.push(`Cloudflare DNS 返回数据: ${JSON.stringify(cfData).substring(0, 200)}...`);
+                debugSteps.push(`Cloudflare DNS Return data: ${JSON.stringify(cfData).substring(0, 200)}...`);
                 
                 if (cfData.Answer && cfData.Answer.length > 0) {
-                    debugSteps.push(`找到 ${cfData.Answer.length} 条答案记录`);
+                    debugSteps.push(`Found ${cfData.Answer.length} answer records`);
                     for (const answer of cfData.Answer) {
                         if (answer.data) {
                             const echMatch = answer.data.match(/ech=([^\s"']+)/);
                             if (echMatch && echMatch[1]) {
-                                echDebugInfo = debugSteps.join('\\n') + '\\n✅ 成功从 Cloudflare DNS 获取 ECH 配置';
+                                echDebugInfo = debugSteps.join('\\n') + '\\n✅ Successfully obtained ECH configuration from Cloudflare DNS';
                                 return echMatch[1];
                             }
                         }
                     }
                 } else {
-                    debugSteps.push('Cloudflare DNS 未返回答案记录');
+                    debugSteps.push('Cloudflare DNS No answer record returned');
                 }
             } else {
-                debugSteps.push(`Cloudflare DNS 请求失败: ${cfResponse.status}`);
+                debugSteps.push(`Cloudflare DNS Request failed: ${cfResponse.status}`);
             }
             
-            echDebugInfo = debugSteps.join('\\n') + '\\n❌ 所有DNS查询均失败，未获取到ECH配置';
+            echDebugInfo = debugSteps.join('\\n') + '\\n❌ All DNS queries failed, ECH configuration not obtained';
             return null;
         } catch (error) {
-            echDebugInfo = debugSteps.join('\\n') + '\\n❌ 获取ECH配置时发生错误: ' + error.message;
+            echDebugInfo = debugSteps.join('\\n') + '\\n❌ Error occurred while getting ECH configuration: ' + error.message;
             return null;
         }
     }
@@ -1559,7 +1559,7 @@
         const workerDomain = url.hostname;
         const target = url.searchParams.get('target') || 'base64';
 
-        // 如果启用了ECH，使用自定义值
+        // If ECH is enabled, use Custom value
         let echConfig = null;
         if (enableECH) {
             const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
@@ -1580,11 +1580,11 @@
         }
 
         if (currentWorkerRegion === 'CUSTOM') {
-            const nativeList = [{ ip: workerDomain, isp: '原生地址' }];
+            const nativeList = [{ ip: workerDomain, isp: 'Native address' }];
             await addNodesFromList(nativeList);
         } else {
             try {
-                const nativeList = [{ ip: workerDomain, isp: '原生地址' }];
+                const nativeList = [{ ip: workerDomain, isp: 'Native address' }];
                 await addNodesFromList(nativeList);
             } catch (error) {
                 if (!currentWorkerRegion) {
@@ -1597,7 +1597,7 @@
                     const backupList = [{ ip: bestBackupIP.domain, isp: 'ProxyIP-' + currentWorkerRegion }];
                     await addNodesFromList(backupList);
                 } else {
-                    const nativeList = [{ ip: workerDomain, isp: '原生地址' }];
+                    const nativeList = [{ ip: workerDomain, isp: 'Native address' }];
                     await addNodesFromList(nativeList);
                 }
             }
@@ -1675,7 +1675,7 @@
         }
 
         if (finalLinks.length === 0) {
-            const errorRemark = "所有节点获取失败";
+            const errorRemark = "All nodes fetch failed";
             const proto = atob('dmxlc3M=');
             const errorLink = `${proto}://00000000-0000-0000-0000-000000000000@127.0.0.1:80?encryption=none&security=none&type=ws&host=error.com&path=%2F#${encodeURIComponent(errorRemark)}`;
             finalLinks.push(errorLink);
@@ -1720,7 +1720,7 @@
             'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
         };
         
-        // 添加ECH状态到响应头
+        // Add ECH status to response headers
         if (enableECH) {
             responseHeaders['X-ECH-Status'] = 'ENABLED';
             if (echConfig) {
@@ -1793,7 +1793,7 @@
                         path: wsPath
                     });
                     
-                    // 如果启用了ECH，添加ech参数（ECH需要伪装成Chrome浏览器）
+                    // If ECH is enabled, add ech parameter (ECH needs to masquerade as Chrome browser)
                     if (enableECH) {
                         const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
                         const echDomain = customECHDomain || 'cloudflare-ech.com';
@@ -1874,7 +1874,7 @@
                         path: wsPath
                     });
                     
-                    // 如果启用了ECH，添加ech参数（ECH需要伪装成Chrome浏览器）
+                    // If ECH is enabled, add ech parameter (ECH needs to masquerade as Chrome browser)
                     if (enableECH) {
                         const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
                         const echDomain = customECHDomain || 'cloudflare-ech.com';
@@ -1904,7 +1904,7 @@
         const v6Url1 = "https://www.wetest.vip/page/cloudflare/address_v6.html";
         let results = [];
 
-        // 读取筛选配置（默认全部启用）
+        // Read filter configuration (all enabled by default)
         const ipv4Enabled = getConfigValue('ipv4', '') === '' || getConfigValue('ipv4', 'yes') !== 'no';
         const ipv6Enabled = getConfigValue('ipv6', '') === '' || getConfigValue('ipv6', 'yes') !== 'no';
         const ispMobile = getConfigValue('ispMobile', '') === '' || getConfigValue('ispMobile', 'yes') !== 'no';
@@ -1927,13 +1927,13 @@
             const [ipv4List, ipv6List] = await Promise.all(fetchPromises);
             results = [...ipv4List, ...ipv6List];
             
-            // 按运营商筛选
+            // Filter by operator
             if (results.length > 0) {
                 results = results.filter(item => {
                     const isp = item.isp || '';
-                    if (isp.includes('移动') && !ispMobile) return false;
-                    if (isp.includes('联通') && !ispUnicom) return false;
-                    if (isp.includes('电信') && !ispTelecom) return false;
+                    if (isp.includes('Mobile') && !ispMobile) return false;
+                    if (isp.includes('Unicom') && !ispUnicom) return false;
+                    if (isp.includes('Telecom') && !ispTelecom) return false;
                     return true;
                 });
             }
@@ -1956,7 +1956,7 @@
             const html = await response.text();
             const results = [];
             const rowRegex = /<tr[\s\S]*?<\/tr>/g;
-            const cellRegex = /<td data-label="线路名称">(.+?)<\/td>[\s\S]*?<td data-label="优选地址">([\d.:a-fA-F]+)<\/td>[\s\S]*?<td data-label="数据中心">(.+?)<\/td>/;
+            const cellRegex = /<td data-label="Line Name">(.+?)<\/td>[\s\S]*?<td data-label="PreferredAddress">([\d.:a-fA-F]+)<\/td>[\s\S]*?<td data-label="Data Center">(.+?)<\/td>/;
 
             let match;
             while ((match = rowRegex.exec(html)) !== null) {
@@ -1982,7 +1982,7 @@
     }
 
     async function handleWsRequest(request) {
-        // 检测并设置当前Worker地区，确保WebSocket请求能正确进行就近匹配
+        // Detect and set currentWorkerRegion，EnsureWebSocketRequest can correctly perform proximity matching
         if (!currentWorkerRegion || currentWorkerRegion === '') {
             if (manualWorkerRegion && manualWorkerRegion.trim()) {
                 currentWorkerRegion = manualWorkerRegion.trim().toUpperCase();
@@ -2245,7 +2245,7 @@
         if (!user) user = at;
         
         const url = new URL(request.url);
-        // 优先检查Cookie中的语言设置
+        // Check language setting in Cookie first
         const cookieHeader = request.headers.get('Cookie') || '';
         let langFromCookie = null;
         if (cookieHeader) {
@@ -2265,7 +2265,7 @@
         } else if (langFromCookie === 'zh' || langFromCookie === 'zh-CN') {
             isFarsi = false;
         } else {
-            // 如果没有Cookie，使用浏览器语言检测
+            // If no Cookie, use browser language detection
             const acceptLanguage = request.headers.get('Accept-Language') || '';
             const browserLang = acceptLanguage.split(',')[0].split('-')[0].toLowerCase();
             isFarsi = browserLang === 'fa' || acceptLanguage.includes('fa-IR') || acceptLanguage.includes('fa');
@@ -2275,143 +2275,143 @@
             
             const translations = {
                 zh: {
-                    title: '订阅中心',
-                    subtitle: '多客户端支持 • 智能优选 • 一键生成',
-                    selectClient: '[ 选择客户端 ]',
-                    systemStatus: '[ 系统状态 ]',
-                    configManagement: '[ 配置管理 ]',
-                    relatedLinks: '[ 相关链接 ]',
-                    checking: '检测中...',
-                    workerRegion: 'Worker地区: ',
-                    detectionMethod: '检测方式: ',
-                    proxyIPStatus: 'ProxyIP状态: ',
-                    currentIP: '当前使用IP: ',
-                    regionMatch: '地区匹配: ',
-                    selectionLogic: '选择逻辑: ',
-                    kvStatusChecking: '检测KV状态中...',
-                    kvEnabled: '✅ KV存储已启用，可以使用配置管理功能',
-                    kvDisabled: '⚠️ KV存储未启用或未配置',
-                    specifyRegion: '指定地区 (wk):',
-                    autoDetect: '自动检测',
-                    saveRegion: '保存地区配置',
-                    protocolSelection: '协议选择:',
-                    enableVLESS: '启用 VLESS 协议',
-                    enableTrojan: '启用 Trojan 协议',
-                    enableXhttp: '启用 xhttp 协议',
-                    trojanPassword: 'Trojan 密码 (可选):',
-                    customPath: '自定义路径 (d):',
-                    customIP: '自定义ProxyIP (p):',
-                    preferredIPs: '优选IP列表 (yx):',
-                    preferredIPsURL: '优选IP来源URL (yxURL):',
-                    latencyTest: '延迟测试',
-                    latencyTestIP: '测试IP/域名:',
-                    latencyTestIPPlaceholder: '输入IP或域名，多个用逗号分隔',
-                    latencyTestPort: '端口:',
-                    startTest: '开始测试',
-                    stopTest: '停止测试',
-                    testResult: '测试结果:',
-                    addToYx: '添加到优选列表',
-                    addSelectedToYx: '添加选中项到优选列表',
-                    selectAll: '全选',
-                    deselectAll: '取消全选',
-                    testingInProgress: '测试中...',
-                    testComplete: '测试完成',
-                    latencyMs: '延迟',
-                    timeout: '超时',
-                    ipSource: 'IP来源:',
-                    manualInput: '手动输入',
-                    cfRandomIP: 'CF随机IP',
-                    urlFetch: 'URL获取',
-                    randomCount: '生成数量:',
-                    fetchURL: '获取URL:',
-                    fetchURLPlaceholder: '输入优选IP的URL地址',
-                    generateIP: '生成IP',
-                    fetchIP: '获取IP',
-                    socks5Config: 'SOCKS5配置 (s):',
-                    customHomepage: '自定义首页URL (homepage):',
-                    customHomepagePlaceholder: '例如: https://example.com',
-                    customHomepageHint: '设置自定义URL作为首页伪装。访问根路径 / 时将显示该URL的内容。留空则显示默认终端页面。',
-                    saveConfig: '保存配置',
-                    advancedControl: '高级控制',
-                    subscriptionConverter: '订阅转换地址:',
-                    builtinPreferred: '内置优选类型:',
-                    enablePreferredDomain: '启用优选域名',
-                    enablePreferredIP: '启用优选 IP',
-                    enableGitHubPreferred: '启用 GitHub 默认优选',
-                    allowAPIManagement: '允许API管理 (ae):',
-                    regionMatching: '地区匹配 (rm):',
-                    downgradeControl: '降级控制 (qj):',
-                    tlsControl: 'TLS控制 (dkby):',
-                    preferredControl: '优选控制 (yxby):',
-                    saveAdvanced: '保存高级配置',
-                    loading: '加载中...',
-                    currentConfig: '📍 当前路径配置',
-                    refreshConfig: '刷新配置',
-                    resetConfig: '重置配置',
-                    subscriptionCopied: '订阅链接已复制',
-                    autoSubscriptionCopied: '自动识别订阅链接已复制，客户端访问时会根据User-Agent自动识别并返回对应格式',
-                    trojanPasswordPlaceholder: '留空则自动使用 UUID',
-                    trojanPasswordHint: '设置自定义 Trojan 密码。留空则使用 UUID。客户端会自动对密码进行 SHA224 哈希。',
-                    protocolHint: '可以同时启用多个协议。订阅将生成选中协议的节点。<br>• VLESS WS: 基于 WebSocket 的标准协议<br>• Trojan: 使用 SHA224 密码认证<br>• xhttp: 基于 HTTP POST 的伪装协议（需要绑定自定义域名并开启 gRPC）',
-                    enableECH: '启用 ECH (Encrypted Client Hello)',
-                    enableECHHint: '启用后，每次刷新订阅时会自动从 DoH 获取最新的 ECH 配置并添加到链接中',
-                    customDNS: '自定义 DNS 服务器',
-                    customDNSPlaceholder: '例如: https://dns.joeyblog.eu.org/joeyblog',
-                    customDNSHint: '用于ECH配置查询的DNS服务器地址（DoH格式）',
-                    customECHDomain: '自定义 ECH 域名',
-                    customECHDomainPlaceholder: '例如: cloudflare-ech.com',
-                    customECHDomainHint: 'ECH配置中使用的域名，留空则使用默认值',
-                    saveProtocol: '保存协议配置',
-                    subscriptionConverterPlaceholder: '默认: https://url.v1.mk/sub',
-                    subscriptionConverterHint: '自定义订阅转换API地址，留空则使用默认地址',
-                    builtinPreferredHint: '控制订阅中包含哪些内置优选节点。默认全部启用。',
-                    apiEnabledDefault: '默认（关闭API）',
-                    apiEnabledYes: '开启API管理',
-                    apiEnabledHint: '⚠️ 安全提醒：开启后允许通过API动态添加优选IP。建议仅在需要时开启。',
-                    regionMatchingDefault: '默认（启用地区匹配）',
-                    regionMatchingNo: '关闭地区匹配',
-                    regionMatchingHint: '设置为"关闭"时不进行地区智能匹配',
-                    downgradeControlDefault: '默认（不启用降级）',
-                    downgradeControlNo: '启用降级模式',
-                    downgradeControlHint: '设置为"启用"时：CF直连失败→SOCKS5连接→fallback地址',
-                    tlsControlDefault: '默认（保留所有节点）',
-                    tlsControlYes: '仅TLS节点',
-                    tlsControlHint: '设置为"仅TLS节点"时只生成带TLS的节点，不生成非TLS节点（如80端口）',
-                    preferredControlDefault: '默认（启用优选）',
-                    preferredControlYes: '关闭优选',
-                    preferredControlHint: '设置为"关闭优选"时只使用原生地址，不生成优选IP和域名节点',
+                    title: 'Subscription Center',
+                    subtitle: 'Multi-client support • smartPreferred • One-click Generate',
+                    selectClient: '[ Select client ]',
+                    systemStatus: '[ System Status ]',
+                    configManagement: '[ Configuration Management ]',
+                    relatedLinks: '[ Related Links ]',
+                    checking: 'Detecting...',
+                    workerRegion: 'WorkerRegion: ',
+                    detectionMethod: 'Detection method: ',
+                    proxyIPStatus: 'ProxyIPStatus: ',
+                    currentIP: 'Currently usingIP: ',
+                    regionMatch: 'Region Matching: ',
+                    selectionLogic: 'Select logic: ',
+                    kvStatusChecking: 'DetectKVin status...',
+                    kvEnabled: '✅ KVStore is enabled，canwithuseConfiguration Managementfeature',
+                    kvDisabled: '⚠️ KVStoreNot enabledorNot configured',
+                    specifyRegion: 'Specified region (wk):',
+                    autoDetect: 'Auto detect',
+                    saveRegion: 'Save region configuration',
+                    protocolSelection: 'Protocol Selection:',
+                    enableVLESS: 'Enable VLESS Protocol',
+                    enableTrojan: 'Enable Trojan Protocol',
+                    enableXhttp: 'Enable xhttp Protocol',
+                    trojanPassword: 'Trojan Password (optional):',
+                    customPath: 'Custompath (d):',
+                    customIP: 'CustomProxyIP (p):',
+                    preferredIPs: 'PreferredIPList (yx):',
+                    preferredIPsURL: 'PreferredIPSourceURL (yxURL):',
+                    latencyTest: 'latencyTest',
+                    latencyTestIP: 'TestIP/Domain:',
+                    latencyTestIPPlaceholder: 'InputIPorDomain，Multiple items separated by commas',
+                    latencyTestPort: 'Port:',
+                    startTest: 'Start Test',
+                    stopTest: 'Stop test',
+                    testResult: 'Test result:',
+                    addToYx: 'Add toPreferredList',
+                    addSelectedToYx: 'Add selected items toPreferredList',
+                    selectAll: 'Select All',
+                    deselectAll: 'CancelSelect All',
+                    testingInProgress: 'Testing...',
+                    testComplete: 'Test completed',
+                    latencyMs: 'latency',
+                    timeout: 'Timeout',
+                    ipSource: 'IPSource:',
+                    manualInput: 'Manual input',
+                    cfRandomIP: 'CFRandomIP',
+                    urlFetch: 'URLGet',
+                    randomCount: 'Generate count:',
+                    fetchURL: 'GetURL:',
+                    fetchURLPlaceholder: 'InputPreferredIPofURLAddress',
+                    generateIP: 'GenerateIP',
+                    fetchIP: 'GetIP',
+                    socks5Config: 'SOCKS5Configuration (s):',
+                    customHomepage: 'CustomhomepageURL (homepage):',
+                    customHomepagePlaceholder: 'for example: https://example.com',
+                    customHomepageHint: 'SetCustomURLas homepage camouflage。access rootpath / will display this whenURLcontent。leave blank to displayDefaultTerminalpage。',
+                    saveConfig: 'Save configuration',
+                    advancedControl: 'advancedControl',
+                    subscriptionConverter: 'Subscription conversion address:',
+                    builtinPreferred: 'Built-inPreferredtype:',
+                    enablePreferredDomain: 'EnablePreferredDomain',
+                    enablePreferredIP: 'EnablePreferred IP',
+                    enableGitHubPreferred: 'Enable GitHub DefaultPreferred',
+                    allowAPIManagement: 'AllowAPIManagement (ae):',
+                    regionMatching: 'Region Matching (rm):',
+                    downgradeControl: 'Downgrade Control (qj):',
+                    tlsControl: 'TLSControl (dkby):',
+                    preferredControl: 'PreferredControl (yxby):',
+                    saveAdvanced: 'Save advanced configuration',
+                    loading: 'Loading...',
+                    currentConfig: '📍 CurrentpathConfiguration',
+                    refreshConfig: 'Refresh configuration',
+                    resetConfig: 'Reset configuration',
+                    subscriptionCopied: 'Subscription link copied',
+                    autoSubscriptionCopied: 'Auto-recognized subscription link copied，Client will determine based onUser-AgentAuto recognize and return corresponding format',
+                    trojanPasswordPlaceholder: 'Leave blank to use automatically UUID',
+                    trojanPasswordHint: 'SetCustom Trojan Password。Leave blank to use UUID。Client will automatically process password SHA224 Hash。',
+                    protocolHint: 'canwithsamewhenEnablemultiple item(s)Protocol。Subscription will generate nodes for selected protocols。<br>• VLESS WS: Based on WebSocket standard protocol<br>• Trojan: use SHA224 Password authentication<br>• xhttp: Based on HTTP POST disguised protocol（NeedbindCustomDomainandEnable gRPC）',
+                    enableECH: 'Enable ECH (Encrypted Client Hello)',
+                    enableECHHint: 'After enabling，Will automatically from every time subscription is refreshed DoH Get latest ECH Configure and add to link',
+                    customDNS: 'Custom DNS Server',
+                    customDNSPlaceholder: 'for example: https://dns.joeyblog.eu.org/joeyblog',
+                    customDNSHint: 'forECHQuery configurationDNSServer address（DoHFormat）',
+                    customECHDomain: 'Custom ECH Domain',
+                    customECHDomainPlaceholder: 'for example: cloudflare-ech.com',
+                    customECHDomainHint: 'ECHDomain used in configuration，Leave blank to use default',
+                    saveProtocol: 'Save protocol configuration',
+                    subscriptionConverterPlaceholder: 'Default: https://url.v1.mk/sub',
+                    subscriptionConverterHint: 'Customsubscription conversionAPIAddress，Leave blank to use default address',
+                    builtinPreferredHint: 'Control what is included in subscriptionBuilt-inPreferredNode。All enabled by default。',
+                    apiEnabledDefault: 'Default（CloseAPI）',
+                    apiEnabledYes: 'EnableAPIManagement',
+                    apiEnabledHint: '⚠️ Security Alert：Allow access through after enablingAPIDynamically addPreferredIP。It is recommended to enable only when needed。',
+                    regionMatchingDefault: 'Default（EnableRegion Matching）',
+                    regionMatchingNo: 'Disable region matching',
+                    regionMatchingHint: 'Set to"Close"No region smart matching when',
+                    downgradeControlDefault: 'Default（Do not enable downgrade）',
+                    downgradeControlNo: 'Enable downgrade mode',
+                    downgradeControlHint: 'Set to"Enable"when：CFDirect connection failed→SOCKS5Connect→fallbackAddress',
+                    tlsControlDefault: 'Default（Keep all nodes）',
+                    tlsControlYes: 'onlyTLSNode',
+                    tlsControlHint: 'Set to"onlyTLSNode"Only generate with whenTLSnodes，Do not generate non-TLSNode（such as80Port）',
+                    preferredControlDefault: 'Default（EnablePreferred）',
+                    preferredControlYes: 'ClosePreferred',
+                    preferredControlHint: 'Set to"ClosePreferred"whenonlyuseNative address，Do not generatePreferredIPand domain nodes',
                     regionNames: {
-                        US: '🇺🇸 美国', SG: '🇸🇬 新加坡', JP: '🇯🇵 日本',
-                        KR: '🇰🇷 韩国', DE: '🇩🇪 德国', SE: '🇸🇪 瑞典', NL: '🇳🇱 荷兰',
-                        FI: '🇫🇮 芬兰', GB: '🇬🇧 英国'
+                        US: '🇺🇸 United States', SG: '🇸🇬 Singapore', JP: '🇯🇵 Japan',
+                        KR: '🇰🇷 South Korea', DE: '🇩🇪 Germany', SE: '🇸🇪 Sweden', NL: '🇳🇱 Netherlands',
+                        FI: '🇫🇮 Finland', GB: '🇬🇧 United Kingdom'
                     },
-                    terminal: '终端 v2.9.3',
-                    githubProject: 'GitHub 项目',
-                    autoDetectClient: '自动识别',
-                selectionLogicText: '同地区 → 邻近地区 → 其他地区',
-                customIPDisabledHint: '使用自定义ProxyIP时，地区选择已禁用',
-                customIPMode: '自定义ProxyIP模式 (p变量启用)',
-                customIPModeDesc: '自定义IP模式 (已禁用地区匹配)',
-                usingCustomProxyIP: '使用自定义ProxyIP: ',
-                customIPConfig: ' (p变量配置)',
-                customIPModeDisabled: '自定义IP模式，地区选择已禁用',
-                manualRegion: '手动指定地区',
-                manualRegionDesc: ' (手动指定)',
-                proxyIPAvailable: '10/10 可用 (ProxyIP域名预设可用)',
-                smartSelection: '智能就近选择中',
-                sameRegionIP: '同地区IP可用 (1个)',
-                cloudflareDetection: 'Cloudflare内置检测',
-                detectionFailed: '检测失败',
-                apiTestResult: 'API检测结果: ',
-                apiTestTime: '检测时间: ',
-                apiTestFailed: 'API检测失败: ',
-                unknownError: '未知错误',
-                apiTestError: 'API测试失败: ',
-                kvNotConfigured: 'KV存储未配置，无法使用配置管理功能。\\n\\n请在Cloudflare Workers中:\\n1. 创建KV命名空间\\n2. 绑定环境变量 C\\n3. 重新部署代码',
-                kvNotEnabled: 'KV存储未配置',
-                kvCheckFailed: 'KV存储检测失败: 响应格式错误',
-                kvCheckFailedStatus: 'KV存储检测失败 - 状态码: ',
-                kvCheckFailedError: 'KV存储检测失败 - 错误: '
+                    terminal: 'Terminal v2.9.3',
+                    githubProject: 'GitHub Project',
+                    autoDetectClient: 'Auto recognize',
+                selectionLogicText: 'Same region → Adjacent regions → Other regions',
+                customIPDisabledHint: 'useCustomProxyIPwhen，Region selection is disabled',
+                customIPMode: 'Custom ProxyIP mode (pvariableEnable)',
+                customIPModeDesc: 'CustomIPMode (Region matching is disabled)',
+                usingCustomProxyIP: 'useCustomProxyIP: ',
+                customIPConfig: ' (pvariableConfiguration)',
+                customIPModeDisabled: 'CustomIPMode，Region selection is disabled',
+                manualRegion: 'Manually specified region',
+                manualRegionDesc: ' (Manually specify)',
+                proxyIPAvailable: '10/10 available (ProxyIPDomain presets available)',
+                smartSelection: 'Smart proximity selection',
+                sameRegionIP: 'Same regionIPavailable (1 item(s))',
+                cloudflareDetection: 'CloudflareBuilt-in detection',
+                detectionFailed: 'Detection failed',
+                apiTestResult: 'API detectionresult: ',
+                apiTestTime: 'Detection time: ',
+                apiTestFailed: 'API detectionFailed: ',
+                unknownError: 'UnknownError',
+                apiTestError: 'API test failed: ',
+                kvNotConfigured: 'KVStore not configured，Cannot use configuration management。\\n\\nPlease inCloudflare Workersin:\\n1. CreateKVNamespace\\n2. Bind environment variables C\\n3. Redeploy code',
+                kvNotEnabled: 'KVStore not configured',
+                kvCheckFailed: 'KVStore detection failed: ResponseFormatError',
+                kvCheckFailedStatus: 'KVStore detection failed - Status code: ',
+                kvCheckFailedError: 'KVStore detection failed - Error: '
             },
                 fa: {
                     title: 'مرکز اشتراک',
@@ -2769,7 +2769,7 @@
             <div class="matrix-text">${t.terminal}</div>
             <div style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
                 <select id="languageSelector" style="background: rgba(0, 20, 0, 0.9); border: 2px solid #00ff00; color: #00ff00; padding: 8px 12px; font-family: 'Courier New', monospace; font-size: 14px; cursor: pointer; text-shadow: 0 0 5px #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);" onchange="changeLanguage(this.value)">
-                    <option value="zh" ${!isFarsi ? 'selected' : ''}>🇨🇳 中文</option>
+                    <option value="zh" ${!isFarsi ? 'selected' : ''}>🇨🇳 Chinese</option>
                     <option value="fa" ${isFarsi ? 'selected' : ''}>🇮🇷 فارسی</option>
                 </select>
             </div>
@@ -2802,7 +2802,7 @@
                         <div id="geoInfo" style="margin: 8px 0; color: #00aa00; font-family: 'Courier New', monospace; font-size: 0.9rem; text-shadow: 0 0 3px #00aa00;">${t.detectionMethod}${t.checking}</div>
                         <div id="backupStatus" style="margin: 8px 0; color: #00ff00; font-family: 'Courier New', monospace; text-shadow: 0 0 3px #00ff00;">${t.proxyIPStatus}${t.checking}</div>
                         <div id="currentIP" style="margin: 8px 0; color: #00ff00; font-family: 'Courier New', monospace; text-shadow: 0 0 3px #00ff00;">${t.currentIP}${t.checking}</div>
-                        <div id="echStatus" style="margin: 8px 0; color: #00ff00; font-family: 'Courier New', monospace; text-shadow: 0 0 3px #00ff00; font-size: 0.9rem;">ECH状态: ${t.checking}</div>
+                        <div id="echStatus" style="margin: 8px 0; color: #00ff00; font-family: 'Courier New', monospace; text-shadow: 0 0 3px #00ff00; font-size: 0.9rem;">ECHStatus: ${t.checking}</div>
                         <div id="regionMatch" style="margin: 8px 0; color: #00ff00; font-family: 'Courier New', monospace; text-shadow: 0 0 3px #00ff00;">${t.regionMatch}${t.checking}</div>
                         <div id="selectionLogic" style="margin: 8px 0; color: #00aa00; font-family: 'Courier New', monospace; font-size: 0.9rem; text-shadow: 0 0 3px #00aa00;">${t.selectionLogic}${t.selectionLogicText}</div>
                 </div>
@@ -2889,23 +2889,23 @@
                         </div>
                         <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">${t.customPath}</label>
-                                <input type="text" id="customPath" placeholder="${isFarsi ? 'مثال: /mypath یا خالی بگذارید تا از UUID استفاده شود' : '例如: /mypath 或留空使用 UUID'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
-                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'مسیر اشتراک سفارشی. اگر خالی بگذارید از UUID به عنوان مسیر استفاده می‌شود.' : '自定义订阅路径。留空则使用 UUID 作为路径。'}</small>
+                                <input type="text" id="customPath" placeholder="${isFarsi ? 'مثال: /mypath یا خالی بگذارید تا از UUID استفاده شود' : 'for example: /mypath orleave blankuse UUID'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
+                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'مسیر اشتراک سفارشی. اگر خالی بگذارید از UUID به عنوان مسیر استفاده می‌شود.' : 'Customsubscriptionpath。Leave blank to use UUID aspath。'}</small>
                         </div>
                         <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">${t.customIP}</label>
-                                <input type="text" id="customIP" placeholder="${isFarsi ? 'مثال: 1.2.3.4:443' : '例如: 1.2.3.4:443'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
-                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'آدرس و پورت ProxyIP سفارشی' : '自定义ProxyIP地址和端口'}</small>
+                                <input type="text" id="customIP" placeholder="${isFarsi ? 'مثال: 1.2.3.4:443' : 'for example: 1.2.3.4:443'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
+                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'آدرس و پورت ProxyIP سفارشی' : 'CustomProxyIPAddress and port'}</small>
                         </div>
                         <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">${t.preferredIPs}</label>
-                                <input type="text" id="yx" placeholder="${isFarsi ? 'مثال: 1.2.3.4:443#گره هنگ‌کنگ,5.6.7.8:80#گره آمریکا,example.com:8443#گره سنگاپور' : '例如: 1.2.3.4:443#日本节点,5.6.7.8:80#美国节点,example.com:8443#新加坡节点'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
-                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'فرمت: IP:پورت#نام گره یا IP:پورت (بدون # از نام پیش‌فرض استفاده می‌شود). پشتیبانی از چندین مورد، با کاما جدا می‌شوند. <span style="color: #ffaa00;">IP های اضافه شده از طریق API به طور خودکار در اینجا نمایش داده می‌شوند.</span>' : '格式: IP:端口#节点名称 或 IP:端口 (无#则使用默认名称)。支持多个，用逗号分隔。<span style="color: #ffaa00;">API添加的IP会自动显示在这里。</span>'}</small>
+                                <input type="text" id="yx" placeholder="${isFarsi ? 'مثال: 1.2.3.4:443#گره هنگ‌کنگ,5.6.7.8:80#گره آمریکا,example.com:8443#گره سنگاپور' : 'for example: 1.2.3.4:443#JapanNode,5.6.7.8:80#United StatesNode,example.com:8443#SingaporeNode'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
+                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'فرمت: IP:پورت#نام گره یا IP:پورت (بدون # از نام پیش‌فرض استفاده می‌شود). پشتیبانی از چندین مورد، با کاما جدا می‌شوند. <span style="color: #ffaa00;">IP های اضافه شده از طریق API به طور خودکار در اینجا نمایش داده می‌شوند.</span>' : 'Format: IP:Port#Node name or IP:Port (None#then use default name)。Support multiple，Separate with comma。<span style="color: #ffaa00;">APIAddedIPwill automatically display here。</span>'}</small>
                         </div>
                         <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">${t.preferredIPsURL}</label>
-                                <input type="text" id="yxURL" placeholder="${isFarsi ? 'پیش‌فرض: https://raw.githubusercontent.com/qwer-search/bestip/refs/heads/main/kejilandbestip.txt' : '默认: https://raw.githubusercontent.com/qwer-search/bestip/refs/heads/main/kejilandbestip.txt'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
-                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'URL منبع لیست IP ترجیحی سفارشی، اگر خالی بگذارید از آدرس پیش‌فرض استفاده می‌شود' : '自定义优选IP列表来源URL，留空则使用默认地址'}</small>
+                                <input type="text" id="yxURL" placeholder="${isFarsi ? 'پیش‌فرض: https://raw.githubusercontent.com/qwer-search/bestip/refs/heads/main/kejilandbestip.txt' : 'Default: https://raw.githubusercontent.com/qwer-search/bestip/refs/heads/main/kejilandbestip.txt'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
+                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'URL منبع لیست IP ترجیحی سفارشی، اگر خالی بگذارید از آدرس پیش‌فرض استفاده می‌شود' : 'Custom PreferredIPList SourceURL，Leave blank to use default address'}</small>
                         </div>
                         
                         <div style="margin-bottom: 20px; padding: 15px; background: rgba(0, 40, 0, 0.6); border: 2px solid #00aa00; border-radius: 8px;">
@@ -2928,7 +2928,7 @@
                                     <input type="number" id="randomIPCount" value="20" min="1" max="100" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.8); border: 1px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 13px;">
                                 </div>
                                 <div style="width: 80px;">
-                                    <label style="display: block; margin-bottom: 5px; color: #00ff00; font-size: 0.9rem;">${isFarsi ? 'رشته‌ها' : '线程'}</label>
+                                    <label style="display: block; margin-bottom: 5px; color: #00ff00; font-size: 0.9rem;">${isFarsi ? 'رشته‌ها' : 'Thread'}</label>
                                     <input type="number" id="testThreads" value="5" min="1" max="50" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.8); border: 1px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 13px;">
                                 </div>
                             </div>
@@ -2963,27 +2963,27 @@
                                     <div style="margin-bottom: 8px;">
                                         <label style="display: inline-flex; align-items: center; cursor: pointer; color: #00ff00; font-size: 0.9rem;">
                                             <input type="radio" name="cityFilterMode" value="all" checked style="margin-right: 6px; width: 16px; height: 16px; cursor: pointer;">
-                                            <span>${isFarsi ? '全部城市' : '全部城市'}</span>
+                                            <span>${isFarsi ? 'All Cities' : 'All Cities'}</span>
                                         </label>
                                         <label style="display: inline-flex; align-items: center; cursor: pointer; color: #00ff00; font-size: 0.9rem; margin-left: 15px;">
                                             <input type="radio" name="cityFilterMode" value="fastest10" style="margin-right: 6px; width: 16px; height: 16px; cursor: pointer;">
-                                            <span>${isFarsi ? '只选择最快的10个' : '只选择最快的10个'}</span>
+                                            <span>${isFarsi ? 'Only select fastestof10 item(s)' : 'Only select fastestof10 item(s)'}</span>
                                         </label>
                                     </div>
                                     <div id="cityCheckboxesContainer" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 80px; overflow-y: auto; padding: 5px;"></div>
                                 </div>
                                 <div id="latencyResultsList" style="background: rgba(0, 0, 0, 0.5); border: 1px solid #004400; border-radius: 4px; padding: 10px;"></div>
                                 <div style="margin-top: 10px; display: flex; gap: 10px;">
-                                    <button type="button" id="overwriteSelectedToYx" style="flex: 1; background: rgba(0, 200, 0, 0.3); border: 1px solid #00ff00; padding: 10px 20px; color: #00ff00; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; transition: all 0.3s;">${isFarsi ? '覆盖添加' : '覆盖添加'}</button>
-                                    <button type="button" id="appendSelectedToYx" style="flex: 1; background: rgba(0, 150, 0, 0.3); border: 1px solid #00aa00; padding: 10px 20px; color: #00aa00; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; transition: all 0.3s;">${isFarsi ? '追加添加' : '追加添加'}</button>
+                                    <button type="button" id="overwriteSelectedToYx" style="flex: 1; background: rgba(0, 200, 0, 0.3); border: 1px solid #00ff00; padding: 10px 20px; color: #00ff00; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; transition: all 0.3s;">${isFarsi ? 'overwriteAdd' : 'overwriteAdd'}</button>
+                                    <button type="button" id="appendSelectedToYx" style="flex: 1; background: rgba(0, 150, 0, 0.3); border: 1px solid #00aa00; padding: 10px 20px; color: #00aa00; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; transition: all 0.3s;">${isFarsi ? 'Append add' : 'Append add'}</button>
                                 </div>
                             </div>
                         </div>
                         
                         <div style="margin-bottom: 15px;">
                                 <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">${t.socks5Config}</label>
-                                <input type="text" id="socksConfig" placeholder="${isFarsi ? 'مثال: user:pass@host:port یا host:port' : '例如: user:pass@host:port 或 host:port'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
-                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'آدرس پروکسی SOCKS5، برای انتقال تمام ترافیک خروجی استفاده می‌شود' : 'SOCKS5代理地址，用于转发所有出站流量'}</small>
+                                <input type="text" id="socksConfig" placeholder="${isFarsi ? 'مثال: user:pass@host:port یا host:port' : 'for example: user:pass@host:port or host:port'}" style="width: 100%; padding: 12px; background: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; color: #00ff00; font-family: 'Courier New', monospace; font-size: 14px;">
+                                <small style="color: #00aa00; font-size: 0.85rem;">${isFarsi ? 'آدرس پروکسی SOCKS5، برای انتقال تمام ترافیک خروجی استفاده می‌شود' : 'SOCKS5Proxy Address，For forwarding all outbound traffic'}</small>
                         </div>
                             <button type="submit" style="background: rgba(0, 255, 0, 0.15); border: 2px solid #00ff00; padding: 12px 24px; color: #00ff00; font-family: 'Courier New', monospace; font-weight: bold; cursor: pointer; margin-right: 10px; text-shadow: 0 0 8px #00ff00; transition: all 0.4s ease;">${t.saveConfig}</button>
                     </form>
@@ -3020,10 +3020,10 @@
                             </div>
                         </div>
                         <div style="margin-bottom: 15px;">
-                                <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">优选IP筛选设置</label>
+                                <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">PreferredIPFilter Settings</label>
                             <div style="padding: 15px; background: rgba(0, 20, 0, 0.6); border: 1px solid #00ff00; border-radius: 5px;">
                                 <div style="margin-bottom: 15px;">
-                                    <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">IP版本选择</label>
+                                    <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">IPVersionselect</label>
                                     <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                                         <label style="display: inline-flex; align-items: center; cursor: pointer; color: #00ff00;">
                                             <input type="checkbox" id="ipv4Enabled" checked style="margin-right: 8px; width: 18px; height: 18px; cursor: pointer;">
@@ -3036,23 +3036,23 @@
                                     </div>
                                 </div>
                                 <div style="margin-bottom: 10px;">
-                                    <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">运营商选择</label>
+                                    <label style="display: block; margin-bottom: 8px; color: #00ff00; font-weight: bold; text-shadow: 0 0 3px #00ff00;">Operator Selection</label>
                                     <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                                         <label style="display: inline-flex; align-items: center; cursor: pointer; color: #00ff00;">
                                             <input type="checkbox" id="ispMobile" checked style="margin-right: 8px; width: 18px; height: 18px; cursor: pointer;">
-                                            <span style="font-size: 1rem;">移动</span>
+                                            <span style="font-size: 1rem;">Mobile</span>
                                         </label>
                                         <label style="display: inline-flex; align-items: center; cursor: pointer; color: #00ff00;">
                                             <input type="checkbox" id="ispUnicom" checked style="margin-right: 8px; width: 18px; height: 18px; cursor: pointer;">
-                                            <span style="font-size: 1rem;">联通</span>
+                                            <span style="font-size: 1rem;">Unicom</span>
                                         </label>
                                         <label style="display: inline-flex; align-items: center; cursor: pointer; color: #00ff00;">
                                             <input type="checkbox" id="ispTelecom" checked style="margin-right: 8px; width: 18px; height: 18px; cursor: pointer;">
-                                            <span style="font-size: 1rem;">电信</span>
+                                            <span style="font-size: 1rem;">Telecom</span>
                                         </label>
                                     </div>
                                 </div>
-                                    <small style="color: #00aa00; font-size: 0.85rem; display: block; margin-top: 10px;">选择要使用的IP版本和运营商，未选中的将被过滤</small>
+                                    <small style="color: #00aa00; font-size: 0.85rem; display: block; margin-top: 10px;">Select to useIPVersionandoperator，Unchecked will be filtered</small>
                             </div>
                         </div>
                         <div style="margin-bottom: 15px;">
@@ -3119,16 +3119,16 @@
             </div>
         </div>
         <script>
-            // 订阅转换地址（从服务器配置注入）
+            // Subscription conversion address（Inject from server configuration）
             var SUB_CONVERTER_URL = "${ scu }";
-            // 远程配置URL（硬编码）
+            // Remote config URL (hardcoded)
             var REMOTE_CONFIG_URL = "${ remoteConfigUrl }";
                 
-                // 翻译对象
+                // Translation object
                 const translations = {
                     zh: {
-                        subscriptionCopied: '订阅链接已复制',
-                        autoSubscriptionCopied: '自动识别订阅链接已复制，客户端访问时会根据User-Agent自动识别并返回对应格式'
+                        subscriptionCopied: 'Subscription link copied',
+                        autoSubscriptionCopied: 'Auto-recognized subscription link copied，Client will determine based onUser-AgentAuto recognize and return corresponding format'
                     },
                     fa: {
                         subscriptionCopied: 'لینک اشتراک کپی شد',
@@ -3159,36 +3159,36 @@
                 
                 function changeLanguage(lang) {
                     localStorage.setItem('preferredLanguage', lang);
-                    // 设置Cookie（有效期1年）
+                    // Set Cookie (valid for 1 year)
                     const expiryDate = new Date();
                     expiryDate.setFullYear(expiryDate.getFullYear() + 1);
                     document.cookie = 'preferredLanguage=' + lang + '; path=/; expires=' + expiryDate.toUTCString() + '; SameSite=Lax';
-                    // 刷新页面，不使用URL参数
+                    // Refresh page without URL parameters
                     window.location.reload();
                 }
                 
-                // 页面加载时检查 localStorage 和 Cookie，并清理URL参数
+                // Check localStorage and Cookie on page load, and clean URL parameters
                 window.addEventListener('DOMContentLoaded', function() {
                     const savedLang = localStorage.getItem('preferredLanguage') || getCookie('preferredLanguage');
                     const urlParams = new URLSearchParams(window.location.search);
                     const urlLang = urlParams.get('lang');
                     
-                    // 如果URL中有语言参数，移除它并设置Cookie
+                    // If URL has language parameter, remove it and set Cookie
                     if (urlLang) {
                         const currentUrl = new URL(window.location.href);
                         currentUrl.searchParams.delete('lang');
                         const newUrl = currentUrl.toString();
                         
-                        // 设置Cookie
+                        // Set Cookie
                         const expiryDate = new Date();
                         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
                         document.cookie = 'preferredLanguage=' + urlLang + '; path=/; expires=' + expiryDate.toUTCString() + '; SameSite=Lax';
                         localStorage.setItem('preferredLanguage', urlLang);
                         
-                        // 使用history API移除URL参数，不刷新页面
+                        // Remove URL parameters using history API without refreshing page
                         window.history.replaceState({}, '', newUrl);
                     } else if (savedLang) {
-                        // 如果localStorage中有但Cookie中没有，同步到Cookie
+                        // If in localStorage but not in Cookie, sync to Cookie
                         const expiryDate = new Date();
                         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
                         document.cookie = 'preferredLanguage=' + savedLang + '; path=/; expires=' + expiryDate.toUTCString() + '; SameSite=Lax';
@@ -3285,10 +3285,10 @@
                         });
                     }
                 } else {
-                    // 检查 ECH 是否开启
+                    // Check ECH Whether to enable
                     var echEnabled = document.getElementById('ech') && document.getElementById('ech').checked;
                     
-                    // 如果 ECH 开启且是 Clash，直接使用后端接口
+                    // if ECH Enabled and is Clash，Use backend interface directly
                     if (echEnabled && clientType === atob('Y2xhc2g=')) {
                         finalUrl = subscriptionUrl + "?target=" + clientType;
                         var urlElement = document.getElementById("clientSubscriptionUrl");
@@ -3320,7 +3320,7 @@
                             });
                         }
                     } else {
-                        // 其他情况使用订阅转换服务
+                        // Use subscription conversion service in other cases
                         var encodedUrl = encodeURIComponent(subscriptionUrl);
                         finalUrl = SUB_CONVERTER_URL + "?target=" + clientType + "&url=" + encodedUrl + "&insert=false&config=" + encodeURIComponent(REMOTE_CONFIG_URL) + "&emoji=true&list=false&xudp=false&udp=false&tfo=false&expand=true&scv=false&fdn=false&new_name=true";
                         var urlElement = document.getElementById("clientSubscriptionUrl");
@@ -3420,7 +3420,7 @@
                     const currentIP = document.getElementById('currentIP');
                     const regionMatch = document.getElementById('regionMatch');
                     
-                        // 获取当前语言设置（优先从Cookie/localStorage读取）
+                        // Get current language setting（Priority fromCookie/localStorageRead）
                         function getCookie(name) {
                             const value = '; ' + document.cookie;
                             const parts = value.split('; ' + name + '=');
@@ -3442,29 +3442,29 @@
                         
                         const translations = {
                             zh: {
-                                workerRegion: 'Worker地区: ',
-                                detectionMethod: '检测方式: ',
-                                proxyIPStatus: 'ProxyIP状态: ',
-                                currentIP: '当前使用IP: ',
-                                regionMatch: '地区匹配: ',
+                                workerRegion: 'WorkerRegion: ',
+                                detectionMethod: 'Detection method: ',
+                                proxyIPStatus: 'ProxyIPStatus: ',
+                                currentIP: 'Currently usingIP: ',
+                                regionMatch: 'Region Matching: ',
                                 regionNames: {
-                        'US': '🇺🇸 美国', 'SG': '🇸🇬 新加坡', 'JP': '🇯🇵 日本',
-                        'KR': '🇰🇷 韩国', 'DE': '🇩🇪 德国', 'SE': '🇸🇪 瑞典', 'NL': '🇳🇱 荷兰',
-                        'FI': '🇫🇮 芬兰', 'GB': '🇬🇧 英国'
+                        'US': '🇺🇸 United States', 'SG': '🇸🇬 Singapore', 'JP': '🇯🇵 Japan',
+                        'KR': '🇰🇷 South Korea', 'DE': '🇩🇪 Germany', 'SE': '🇸🇪 Sweden', 'NL': '🇳🇱 Netherlands',
+                        'FI': '🇫🇮 Finland', 'GB': '🇬🇧 United Kingdom'
                                 },
-                                customIPMode: '自定义ProxyIP模式 (p变量启用)',
-                                customIPModeDesc: '自定义IP模式 (已禁用地区匹配)',
-                                usingCustomProxyIP: '使用自定义ProxyIP: ',
-                                customIPConfig: ' (p变量配置)',
-                                customIPModeDisabled: '自定义IP模式，地区选择已禁用',
-                                manualRegion: '手动指定地区',
-                                manualRegionDesc: ' (手动指定)',
-                                proxyIPAvailable: '10/10 可用 (ProxyIP域名预设可用)',
-                                smartSelection: '智能就近选择中',
-                                sameRegionIP: '同地区IP可用 (1个)',
-                                cloudflareDetection: 'Cloudflare内置检测',
-                                detectionFailed: '检测失败',
-                                unknown: '未知'
+                                customIPMode: 'Custom ProxyIP mode (pvariableEnable)',
+                                customIPModeDesc: 'CustomIPMode (Region matching is disabled)',
+                                usingCustomProxyIP: 'useCustomProxyIP: ',
+                                customIPConfig: ' (pvariableConfiguration)',
+                                customIPModeDisabled: 'CustomIPMode，Region selection is disabled',
+                                manualRegion: 'Manually specified region',
+                                manualRegionDesc: ' (Manually specify)',
+                                proxyIPAvailable: '10/10 available (ProxyIPDomain presets available)',
+                                smartSelection: 'Smart proximity selection',
+                                sameRegionIP: 'Same regionIPavailable (1 item(s))',
+                                cloudflareDetection: 'CloudflareBuilt-in detection',
+                                detectionFailed: 'Detection failed',
+                                unknown: 'Unknown'
                             },
                             fa: {
                                 workerRegion: 'منطقه Worker: ',
@@ -3495,7 +3495,7 @@
                         
                         const t = translations[isFarsi ? 'fa' : 'zh'];
                     
-                    let detectedRegion = 'US'; // 默认值
+                    let detectedRegion = 'US'; // Default value
                     let isCustomIPMode = false;
                     let isManualRegionMode = false;
                     try {
@@ -3506,31 +3506,31 @@
                             isCustomIPMode = true;
                             detectedRegion = 'CUSTOM';
                             
-                            // 获取自定义IP的详细信息
+                            // GetCustomIPdetails
                                 const customIPInfo = data.ci || t.unknown;
                             
                                 geoInfo.innerHTML = t.detectionMethod + '<span style="color: #ffaa00;">⚙️ ' + t.customIPMode + '</span>';
                                 regionStatus.innerHTML = t.workerRegion + '<span style="color: #ffaa00;">🔧 ' + t.customIPModeDesc + '</span>';
                             
-                            // 显示自定义IP配置状态，包含具体IP
+                            // displayCustomIPConfiguration status，Contains specificIP
                                 if (backupStatus) backupStatus.innerHTML = t.proxyIPStatus + '<span style="color: #ffaa00;">🔧 ' + t.usingCustomProxyIP + customIPInfo + '</span>';
                                 if (currentIP) currentIP.innerHTML = t.currentIP + '<span style="color: #ffaa00;">✅ ' + customIPInfo + t.customIPConfig + '</span>';
                                 if (regionMatch) regionMatch.innerHTML = t.regionMatch + '<span style="color: #ffaa00;">⚠️ ' + t.customIPModeDisabled + '</span>';
                             
-                            return; // 提前返回，不执行后续的地区匹配逻辑
-                            } else if (data.detectionMethod === '手动指定地区' || data.detectionMethod === 'تعیین منطقه دستی') {
+                            return; // Return early，Do not execute subsequent region matching logic
+                            } else if (data.detectionMethod === 'Manually specified region' || data.detectionMethod === 'تعیین منطقه دستی') {
                             isManualRegionMode = true;
                             detectedRegion = data.region;
                             
                                 geoInfo.innerHTML = t.detectionMethod + '<span style="color: #44aa44;">' + t.manualRegion + '</span>';
                                 regionStatus.innerHTML = t.workerRegion + '<span style="color: #44ff44;">🎯 ' + t.regionNames[detectedRegion] + t.manualRegionDesc + '</span>';
                             
-                            // 显示配置状态而不是检测状态
+                            // Show configuration status instead of detection status
                                 if (backupStatus) backupStatus.innerHTML = t.proxyIPStatus + '<span style="color: #44ff44;">✅ ' + t.proxyIPAvailable + '</span>';
                                 if (currentIP) currentIP.innerHTML = t.currentIP + '<span style="color: #44ff44;">✅ ' + t.smartSelection + '</span>';
                                 if (regionMatch) regionMatch.innerHTML = t.regionMatch + '<span style="color: #44ff44;">✅ ' + t.sameRegionIP + '</span>';
                             
-                            return; // 提前返回，不执行后续的地区匹配逻辑
+                            return; // Return early，Do not execute subsequent region matching logic
                             } else if (data.region && t.regionNames[data.region]) {
                             detectedRegion = data.region;
                         }
@@ -3543,7 +3543,7 @@
                     
                         regionStatus.innerHTML = t.workerRegion + '<span style="color: #44ff44;">✅ ' + t.regionNames[detectedRegion] + '</span>';
                     
-                    // 直接显示配置状态，不再进行检测
+                    // Display configuration status directly，No more detection
                     if (backupStatus) {
                             backupStatus.innerHTML = t.proxyIPStatus + '<span style="color: #44ff44;">✅ ' + t.proxyIPAvailable + '</span>';
                     }
@@ -3576,12 +3576,12 @@
                         
                         const translations = {
                             zh: {
-                                workerRegion: 'Worker地区: ',
-                                detectionMethod: '检测方式: ',
-                                proxyIPStatus: 'ProxyIP状态: ',
-                                currentIP: '当前使用IP: ',
-                                regionMatch: '地区匹配: ',
-                                detectionFailed: '检测失败'
+                                workerRegion: 'WorkerRegion: ',
+                                detectionMethod: 'Detection method: ',
+                                proxyIPStatus: 'ProxyIPStatus: ',
+                                currentIP: 'Currently usingIP: ',
+                                regionMatch: 'Region Matching: ',
+                                detectionFailed: 'Detection failed'
                             },
                             fa: {
                                 workerRegion: 'منطقه Worker: ',
@@ -3624,11 +3624,11 @@
                         
                         const translations = {
                             zh: {
-                                apiTestResult: 'API检测结果: ',
-                                apiTestTime: '检测时间: ',
-                                apiTestFailed: 'API检测失败: ',
-                                unknownError: '未知错误',
-                                apiTestError: 'API测试失败: '
+                                apiTestResult: 'API detectionresult: ',
+                                apiTestTime: 'Detection time: ',
+                                apiTestFailed: 'API detectionFailed: ',
+                                unknownError: 'UnknownError',
+                                apiTestError: 'API test failed: '
                             },
                             fa: {
                                 apiTestResult: 'نتیجه تشخیص API: ',
@@ -3668,7 +3668,7 @@
                         }
                         
                         const translations = {
-                            zh: { apiTestError: 'API测试失败: ' },
+                            zh: { apiTestError: 'API test failed: ' },
                             fa: { apiTestError: 'تست API ناموفق: ' }
                         };
                         
@@ -3677,7 +3677,7 @@
                 }
             }
             
-            // 配置管理相关函数
+            // Configuration management related functions
             async function checkKVStatus() {
                 const apiUrl = window.location.pathname + '/api/config';
                 
@@ -3703,14 +3703,14 @@
                         
                         const translations = {
                             zh: {
-                                kvDisabled: '⚠️ KV存储未启用或未配置',
-                                kvNotConfigured: 'KV存储未配置，无法使用配置管理功能。\\n\\n请在Cloudflare Workers中:\\n1. 创建KV命名空间\\n2. 绑定环境变量 C\\n3. 重新部署代码',
-                                kvNotEnabled: 'KV存储未配置',
-                                kvEnabled: '✅ KV存储已启用，可以使用配置管理功能',
-                                kvCheckFailed: '⚠️ KV存储检测失败',
-                                kvCheckFailedFormat: 'KV存储检测失败: 响应格式错误',
-                                kvCheckFailedStatus: 'KV存储检测失败 - 状态码: ',
-                                kvCheckFailedError: 'KV存储检测失败 - 错误: '
+                                kvDisabled: '⚠️ KVStoreNot enabledorNot configured',
+                                kvNotConfigured: 'KVStore not configured，Cannot use configuration management。\\n\\nPlease inCloudflare Workersin:\\n1. CreateKVNamespace\\n2. Bind environment variables C\\n3. Redeploy code',
+                                kvNotEnabled: 'KVStore not configured',
+                                kvEnabled: '✅ KVStore is enabled，canwithuseConfiguration Managementfeature',
+                                kvCheckFailed: '⚠️ KVStore detection failed',
+                                kvCheckFailedFormat: 'KVStore detection failed: ResponseFormatError',
+                                kvCheckFailedStatus: 'KVStore detection failed - Status code: ',
+                                kvCheckFailedError: 'KVStore detection failed - Error: '
                             },
                             fa: {
                                 kvDisabled: '⚠️ ذخیره‌سازی KV فعال نیست یا پیکربندی نشده است',
@@ -3727,7 +3727,7 @@
                         const t = translations[isFarsi ? 'fa' : 'zh'];
                         
                         if (response.status === 503) {
-                            // KV未配置
+                            // KVNot configured
                             document.getElementById('kvStatus').innerHTML = '<span style="color: #ffaa00;">' + t.kvDisabled + '</span>';
                             document.getElementById('configCard').style.display = 'block';
                             document.getElementById('currentConfig').textContent = t.kvNotConfigured;
@@ -3735,7 +3735,7 @@
                         try {
                         const data = await response.json();
                         
-                            // 检查响应是否包含KV配置信息
+                            // Check if response containsKVConfiguration information
                             if (data && data.kvEnabled === true) {
                                 document.getElementById('kvStatus').innerHTML = '<span style="color: #44ff44;">' + t.kvEnabled + '</span>';
                                 document.getElementById('configContent').style.display = 'block';
@@ -3776,8 +3776,8 @@
                     
                     const translations = {
                         zh: {
-                            kvDisabled: '⚠️ KV存储未启用或未配置',
-                            kvCheckFailedError: 'KV存储检测失败 - 错误: '
+                            kvDisabled: '⚠️ KVStoreNot enabledorNot configured',
+                            kvCheckFailedError: 'KVStore detection failed - Error: '
                         },
                         fa: {
                             kvDisabled: '⚠️ ذخیره‌سازی KV فعال نیست یا پیکربندی نشده است',
@@ -3800,17 +3800,17 @@
                     const response = await fetch(apiUrl);
                     
                     if (response.status === 503) {
-                        document.getElementById('currentConfig').textContent = 'KV存储未配置，无法加载配置';
+                        document.getElementById('currentConfig').textContent = 'KVStore not configured，Cannot load configuration';
                         return;
                     }
                     if (!response.ok) {
                         const errorText = await response.text();
-                        document.getElementById('currentConfig').textContent = '加载配置失败: ' + errorText;
+                        document.getElementById('currentConfig').textContent = 'loadConfigurationFailed: ' + errorText;
                         return;
                     }
                     const config = await response.json();
                     
-                    // 过滤掉内部字段 kvEnabled
+                    // filter out internalfield kvEnabled
                     const displayConfig = {};
                     for (const [key, value] of Object.entries(config)) {
                         if (key !== 'kvEnabled') {
@@ -3818,18 +3818,18 @@
                         }
                     }
                     
-                    let configText = '当前配置:\\n';
+                    let configText = 'Current configuration:\\n';
                     if (Object.keys(displayConfig).length === 0) {
-                        configText += '(暂无配置)';
+                        configText += '(No configuration)';
                     } else {
                         for (const [key, value] of Object.entries(displayConfig)) {
-                            configText += key + ': ' + (value || '(未设置)') + '\\n';
+                            configText += key + ': ' + (value || '(Not set)') + '\\n';
                         }
                     }
                     
                     document.getElementById('currentConfig').textContent = configText;
                     
-                    // 更新表单值
+                    // Update form values
                     document.getElementById('wkRegion').value = config.wk || '';
                     document.getElementById('ev').checked = config.ev !== 'no';
                     document.getElementById('et').checked = config.et === 'yes';
@@ -3863,18 +3863,18 @@
                     document.getElementById('portControl').value = config.dkby || '';
                     document.getElementById('preferredControl').value = config.yxby || '';
                     
-                    // 更新路径类型显示
+                    // Updatepathtype display
                     updatePathTypeStatus(config.d);
                     
-                    // 检查p变量，如果有值则禁用wk地区选择
+                    // Checkpvariable，Disable if has valuewkRegion Selection
                     updateWkRegionState();
                     
                 } catch (error) {
-                    document.getElementById('currentConfig').textContent = '加载配置失败: ' + error.message;
+                    document.getElementById('currentConfig').textContent = 'loadConfigurationFailed: ' + error.message;
                 }
             }
             
-            // 更新路径类型显示
+            // Updatepathtype display
             function updatePathTypeStatus(cp) {
                 const pathTypeStatus = document.getElementById('pathTypeStatus');
                 const currentUrl = window.location.href;
@@ -3882,20 +3882,20 @@
                 const currentPath = pathParts.length > 0 ? pathParts[0] : '';
                 
                 if (cp && cp.trim()) {
-                    // 使用自定义路径 (d)
-                    pathTypeStatus.innerHTML = '<div style="color: #44ff44;">使用类型: <strong>自定义路径 (d)</strong></div>' +
-                        '<div style="margin-top: 5px; color: #00ff00;">当前路径: <span style="color: #ffaa00;">' + cp + '</span></div>' +
-                        '<div style="margin-top: 5px; font-size: 0.9rem; color: #00aa00;">访问地址: ' + 
+                    // Use custom path (d)
+                    pathTypeStatus.innerHTML = '<div style="color: #44ff44;">use type: <strong>Custompath (d)</strong></div>' +
+                        '<div style="margin-top: 5px; color: #00ff00;">Currentpath: <span style="color: #ffaa00;">' + cp + '</span></div>' +
+                        '<div style="margin-top: 5px; font-size: 0.9rem; color: #00aa00;">Access address: ' + 
                         (currentUrl.split('/')[0] + '//' + currentUrl.split('/')[2]) + cp + '/sub</div>';
                 } else {
-                    // 使用 UUID (u)
-                    pathTypeStatus.innerHTML = '<div style="color: #44ff44;">使用类型: <strong>UUID 路径 (u)</strong></div>' +
-                        '<div style="margin-top: 5px; color: #00ff00;">当前路径: <span style="color: #ffaa00;">' + (currentPath || '(UUID)') + '</span></div>' +
-                        '<div style="margin-top: 5px; font-size: 0.9rem; color: #00aa00;">访问地址: ' + currentUrl.split('/sub')[0] + '/sub</div>';
+                    // use UUID (u)
+                    pathTypeStatus.innerHTML = '<div style="color: #44ff44;">use type: <strong>UUID path (u)</strong></div>' +
+                        '<div style="margin-top: 5px; color: #00ff00;">Currentpath: <span style="color: #ffaa00;">' + (currentPath || '(UUID)') + '</span></div>' +
+                        '<div style="margin-top: 5px; font-size: 0.9rem; color: #00aa00;">Access address: ' + currentUrl.split('/sub')[0] + '/sub</div>';
                 }
             }
             
-            // 更新wk地区选择的启用/禁用状态
+            // UpdatewkEnable region selection/Disabled status
             function updateWkRegionState() {
                 const customIPInput = document.getElementById('customIP');
                 const wkRegion = document.getElementById('wkRegion');
@@ -3905,12 +3905,12 @@
                     const hasCustomIP = customIPInput.value.trim() !== '';
                     wkRegion.disabled = hasCustomIP;
                     
-                    // 添加视觉反馈
+                    // Add visual feedback
                     if (hasCustomIP) {
                         wkRegion.style.opacity = '0.5';
                         wkRegion.style.cursor = 'not-allowed';
                         wkRegion.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-                        // 显示提示信息
+                        // Show hint
                         if (wkRegionHint) {
                             wkRegionHint.style.display = 'block';
                             wkRegionHint.style.color = '#ffaa00';
@@ -3919,7 +3919,7 @@
                         wkRegion.style.opacity = '1';
                         wkRegion.style.cursor = 'pointer';
                         wkRegion.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-                        // 隐藏提示信息
+                        // Hide hint
                         if (wkRegionHint) {
                             wkRegionHint.style.display = 'none';
                         }
@@ -3939,20 +3939,20 @@
                     
                     
                     if (response.status === 503) {
-                        showStatus('KV存储未配置，无法保存配置。请先在Cloudflare Workers中配置KV存储。', 'error');
+                        showStatus('KVStore not configured，Cannot save configuration。Please first inCloudflare Workersin configurationKVStore。', 'error');
                         return;
                     }
                     
                     if (!response.ok) {
                         const errorText = await response.text();
                         
-                        // 尝试解析 JSON 错误信息
+                        // Try to parse JSON ErrorInformation
                         try {
                             const errorData = JSON.parse(errorText);
-                            showStatus(errorData.message || '保存失败', 'error');
+                            showStatus(errorData.message || 'Save failed', 'error');
                         } catch (parseError) {
-                            // 如果不是 JSON，直接显示文本
-                            showStatus('保存失败: ' + errorText, 'error');
+                            // if not JSON，Display text directly
+                            showStatus('Save failed: ' + errorText, 'error');
                         }
                         return;
                     }
@@ -3963,16 +3963,16 @@
                     
                     if (result.success) {
                         await loadCurrentConfig();
-                        // 更新wk地区选择状态
+                        // UpdatewkRegion selection status
                         updateWkRegionState();
-                        // 保存成功后刷新页面以更新系统状态
+                        // Refresh page after successful save to update system status
                         setTimeout(function() {
                             window.location.reload();
                         }, 1500);
                     } else {
                     }
                 } catch (error) {
-                    showStatus('保存失败: ' + error.message, 'error');
+                    showStatus('Save failed: ' + error.message, 'error');
                 }
             }
             
@@ -3989,7 +3989,7 @@
             }
             
             async function resetAllConfig() {
-                if (confirm('确定要重置所有配置吗？这将清空所有KV配置，恢复为环境变量设置。')) {
+                if (confirm('Are you sure you want to reset all configurations？This will clear allKVConfiguration，Restore to environment variable settings。')) {
                     try {
                         const response = await fetch(window.location.pathname + '/api/config', {
                             method: 'POST',
@@ -4011,38 +4011,38 @@
                         });
                         
                         if (response.status === 503) {
-                            showStatus('KV存储未配置，无法重置配置。', 'error');
+                            showStatus('KVStore not configured，Cannot reset configuration。', 'error');
                             return;
                         }
                         
                         if (!response.ok) {
                             const errorText = await response.text();
                             
-                            // 尝试解析 JSON 错误信息
+                            // Try to parse JSON ErrorInformation
                             try {
                                 const errorData = JSON.parse(errorText);
-                                showStatus(errorData.message || '重置失败', 'error');
+                                showStatus(errorData.message || 'Reset failed', 'error');
                             } catch (parseError) {
-                                // 如果不是 JSON，直接显示文本
-                                showStatus('重置失败: ' + errorText, 'error');
+                                // if not JSON，Display text directly
+                                showStatus('Reset failed: ' + errorText, 'error');
                             }
                             return;
                         }
                         
                         const result = await response.json();
-                        showStatus(result.message || '配置已重置', result.success ? 'success' : 'error');
+                        showStatus(result.message || 'Configuration reset', result.success ? 'success' : 'error');
                         
                         if (result.success) {
                             await loadCurrentConfig();
-                            // 更新wk地区选择状态
+                            // UpdatewkRegion selection status
                             updateWkRegionState();
-                            // 刷新页面以更新系统状态
+                            // Refresh page to update system status
                             setTimeout(function() {
                                 window.location.reload();
                             }, 1500);
                         }
                     } catch (error) {
-                        showStatus('重置失败: ' + error.message, 'error');
+                        showStatus('Reset failed: ' + error.message, 'error');
                     }
                 }
             }
@@ -4056,7 +4056,7 @@
                     const currentUrl = window.location.href;
                     const subscriptionUrl = currentUrl + '/sub';
                     
-                    echStatusEl.innerHTML = 'ECH状态: <span style="color: #ffaa00;">检测中...</span>';
+                    echStatusEl.innerHTML = 'ECHStatus: <span style="color: #ffaa00;">Detecting...</span>';
                     
                     const response = await fetch(subscriptionUrl, {
                         method: 'GET',
@@ -4069,12 +4069,12 @@
                     const echConfigLength = response.headers.get('X-ECH-Config-Length');
                     
                     if (echStatusHeader === 'ENABLED') {
-                        echStatusEl.innerHTML = 'ECH状态: <span style="color: #44ff44;">✅ 已启用' + (echConfigLength ? ' (配置长度: ' + echConfigLength + ')' : '') + '</span>';
+                        echStatusEl.innerHTML = 'ECHStatus: <span style="color: #44ff44;">✅ Enabled' + (echConfigLength ? ' (Configurationlength: ' + echConfigLength + ')' : '') + '</span>';
                     } else {
-                        echStatusEl.innerHTML = 'ECH状态: <span style="color: #ffaa00;">⚠️ 未启用</span>';
+                        echStatusEl.innerHTML = 'ECHStatus: <span style="color: #ffaa00;">⚠️ Not enabled</span>';
                     }
                 } catch (error) {
-                    echStatusEl.innerHTML = 'ECH状态: <span style="color: #ff4444;">❌ 检测失败: ' + error.message + '</span>';
+                    echStatusEl.innerHTML = 'ECHStatus: <span style="color: #ff4444;">❌ Detection failed: ' + error.message + '</span>';
                 }
             }
             
@@ -4084,24 +4084,24 @@
                 checkKVStatus();
                 checkECHStatus();
                 
-                // ECH 开启时自动联动开启仅TLS
+                // ECH Automatically enable only when enabledTLS
                 const echCheckbox = document.getElementById('ech');
                 const portControl = document.getElementById('portControl');
                 if (echCheckbox && portControl) {
                     echCheckbox.addEventListener('change', function() {
                         if (this.checked) {
-                            // ECH 开启时，自动设置仅TLS为 yes
+                            // ECH When enabled，Automatically set onlyTLSfor yes
                             portControl.value = 'yes';
                         }
                     });
                     
-                    // 页面加载时，如果 ECH 已勾选，也自动设置仅TLS
+                    // On page load，if ECH Checked，also automatically set onlyTLS
                     if (echCheckbox.checked) {
                         portControl.value = 'yes';
                     }
                 }
                 
-                // 监听customIP输入框变化，实时更新wk地区选择状态
+                // ListencustomIPInput box change，Real-time updatewkRegion selection status
                 const customIPInput = document.getElementById('customIP');
                 if (customIPInput) {
                     customIPInput.addEventListener('input', function() {
@@ -4109,7 +4109,7 @@
                     });
                 }
                 
-                // 绑定表单事件
+                // Bind form events
                 const regionForm = document.getElementById('regionForm');
                 if (regionForm) {
                     regionForm.addEventListener('submit', async function(e) {
@@ -4136,7 +4136,7 @@
                         if (!document.getElementById('ev').checked && 
                             !document.getElementById('et').checked && 
                             !document.getElementById('ex').checked) {
-                            alert('至少需要启用一个协议！');
+                            alert('At least one protocol must be enabled！');
                             return;
                         }
                         
@@ -4159,11 +4159,11 @@
                             customECHDomain: document.getElementById('customECHDomain').value
                         };
                         
-                        // 确保至少选择一个协议
+                        // Ensure at least one protocol is selected
                         if (!document.getElementById('ev').checked && 
                             !document.getElementById('et').checked && 
                             !document.getElementById('ex').checked) {
-                            alert('至少需要启用一个协议！');
+                            alert('At least one protocol must be enabled！');
                             return;
                         }
                         
@@ -4241,7 +4241,7 @@
                     randomIPCount.addEventListener('input', function() {
                         localStorage.setItem('randomIPCount', this.value);
                     });
-                    // 初始化时，如果默认是隐藏的，则禁用输入框
+                    // During initialization，If default is hidden，then disable input box
                     if (randomCountDiv && randomCountDiv.style.display === 'none') {
                         randomIPCount.disabled = true;
                     }
@@ -4264,7 +4264,7 @@
                     urlFetchDiv.style.display = currentSource === 'urlFetch' ? 'block' : 'none';
                     cfRandomDiv.style.display = currentSource === 'cfRandom' ? 'block' : 'none';
                     randomCountDiv.style.display = currentSource === 'cfRandom' ? 'block' : 'none';
-                    // 当隐藏时禁用输入框，避免表单验证错误
+                    // Disable input box when hidden，Avoidform validationError
                     if (randomIPCount) {
                         randomIPCount.disabled = currentSource !== 'cfRandom';
                     }
@@ -4307,7 +4307,7 @@
                         urlFetchDiv.style.display = value === 'urlFetch' ? 'block' : 'none';
                         cfRandomDiv.style.display = value === 'cfRandom' ? 'block' : 'none';
                         randomCountDiv.style.display = value === 'cfRandom' ? 'block' : 'none';
-                        // 当隐藏时禁用输入框，避免表单验证错误
+                        // Disable input box when hidden，Avoidform validationError
                         if (randomIPCount) {
                             randomIPCount.disabled = value !== 'cfRandom';
                         }
@@ -4321,7 +4321,7 @@
                         const ips = generateCFRandomIPs(count, port);
                         document.getElementById('latencyTestInput').value = ips.join(',');
                         manualInputDiv.style.display = 'block';
-                        showStatus('${isFarsi ? 'تولید شد' : '已生成'} ' + count + ' ${isFarsi ? 'IP تصادفی CF' : '个CF随机IP'}', 'success');
+                        showStatus('${isFarsi ? 'تولید شد' : 'Generated'} ' + count + ' ${isFarsi ? 'IP تصادفی CF' : ' item(s)CFRandomIP'}', 'success');
                     });
                 }
                 
@@ -4330,15 +4330,15 @@
                         const urlInput = document.getElementById('fetchURLInput');
                         const fetchUrl = urlInput.value.trim();
                         if (!fetchUrl) {
-                            alert('${isFarsi ? 'لطفا URL را وارد کنید' : '请输入URL'}');
+                            alert('${isFarsi ? 'لطفا URL را وارد کنید' : 'Please enterURL'}');
                             return;
                         }
                         
                         fetchIPBtn.disabled = true;
-                        fetchIPBtn.textContent = '${isFarsi ? 'در حال دریافت...' : '获取中...'}';
+                        fetchIPBtn.textContent = '${isFarsi ? 'در حال دریافت...' : 'Getting...'}';
                         
                         try {
-                            // 支持多个 URL（逗号分隔）以及返回内容中逗号分隔的多个 IP/节点
+                            // Support multiple URL（Comma separated）and multiple comma-separated items in return content IP/Node
                             const urlList = Array.from(new Set(
                                 fetchUrl.split(',').map(u => u.trim()).filter(u => u)
                             ));
@@ -4352,7 +4352,7 @@
                                 }
                                 const text = await response.text();
                                 
-                                // 先按行分割，再在每行内按逗号分割，兼容“多行 + 逗号分隔”两种格式
+                                // Split by line first，Then split by comma within each line，Compatible“Multi-line + Comma separated”two formats
                                 const perUrlItems = text
                                     .split(/\\r?\\n/)
                                     .map(l => l.trim())
@@ -4365,15 +4365,15 @@
                             if (allItems.length > 0) {
                                 document.getElementById('latencyTestInput').value = allItems.join(',');
                                 manualInputDiv.style.display = 'block';
-                                showStatus('${isFarsi ? 'دریافت شد' : '已获取'} ' + allItems.length + ' ${isFarsi ? 'IP' : '个IP'}', 'success');
+                                showStatus('${isFarsi ? 'دریافت شد' : 'Obtained'} ' + allItems.length + ' ${isFarsi ? 'IP' : ' item(s)IP'}', 'success');
                             } else {
-                                showStatus('${isFarsi ? 'داده‌ای یافت نشد' : '未获取到数据'}', 'error');
+                                showStatus('${isFarsi ? 'داده‌ای یافت نشد' : 'No data obtained'}', 'error');
                             }
                         } catch (err) {
-                            showStatus('${isFarsi ? 'خطا در دریافت' : '获取失败'}: ' + err.message, 'error');
+                            showStatus('${isFarsi ? 'خطا در دریافت' : 'Get failed'}: ' + err.message, 'error');
                         } finally {
                             fetchIPBtn.disabled = false;
-                            fetchIPBtn.textContent = '⬇ ${isFarsi ? 'دریافت IP' : '获取IP'}';
+                            fetchIPBtn.textContent = '⬇ ${isFarsi ? 'دریافت IP' : 'GetIP'}';
                         }
                     });
                 }
@@ -4388,7 +4388,7 @@
                         const threads = parseInt(threadsField.value) || 5;
                         
                         if (!inputValue) {
-                            showStatus('${isFarsi ? 'لطفا IP یا دامنه وارد کنید' : '请输入IP或域名'}', 'error');
+                            showStatus('${isFarsi ? 'لطفا IP یا دامنه وارد کنید' : 'Please enterIPorDomain'}', 'error');
                             return;
                         }
                         
@@ -4437,7 +4437,7 @@
                         }
                         
                         function renderResult(result, index, shouldShow = true) {
-                            // 只展示在线优选成功的结果，失败/超时的不再显示
+                            // Only show onlinePreferredsuccessofresult，Failed/Timed out items will not be displayed
                             if (!result.success) {
                                 return null;
                             }
@@ -4484,7 +4484,7 @@
                             if (testAbortController.signal.aborted) break;
                             
                             const batch = targets.slice(i, Math.min(i + threads, total));
-                            testStatus.textContent = '${isFarsi ? 'در حال تست' : '测试中'}: ' + (i + 1) + '-' + Math.min(i + threads, total) + '/' + total + ' (${isFarsi ? 'رشته‌ها' : '线程'}: ' + threads + ')';
+                            testStatus.textContent = '${isFarsi ? 'در حال تست' : 'Testing'}: ' + (i + 1) + '-' + Math.min(i + threads, total) + '/' + total + ' (${isFarsi ? 'رشته‌ها' : 'Thread'}: ' + threads + ')';
                             
                             const results = await Promise.all(batch.map(t => testOne(t)));
                             
@@ -4498,11 +4498,11 @@
                             }
                         }
                         
-                        testStatus.textContent = '${isFarsi ? 'تست کامل شد' : '测试完成'}: ' + completed + '/' + total;
+                        testStatus.textContent = '${isFarsi ? 'تست کامل شد' : 'Test completed'}: ' + completed + '/' + total;
                         startTestBtn.style.display = 'inline-block';
                         stopTestBtn.style.display = 'none';
                         
-                        // 更新城市选择器
+                        // Update city selector
                         updateCityFilter();
                     });
                 }
@@ -4514,7 +4514,7 @@
                         }
                         startTestBtn.style.display = 'inline-block';
                         stopTestBtn.style.display = 'none';
-                        testStatus.textContent = '${isFarsi ? 'تست متوقف شد' : '测试已停止'}';
+                        testStatus.textContent = '${isFarsi ? 'تست متوقف شد' : 'Test stopped'}';
                     });
                 }
                 
@@ -4532,11 +4532,11 @@
                     });
                 }
                 
-                // 获取选中项的通用函数
+                // Generic function to get selected items
                 function getSelectedItems() {
                     const checkboxes = resultsList.querySelectorAll('input[type="checkbox"]:checked');
                     if (checkboxes.length === 0) {
-                        showStatus('${isFarsi ? 'لطفا حداقل یک مورد انتخاب کنید' : '请至少选择一项'}', 'error');
+                        showStatus('${isFarsi ? 'لطفا حداقل یک مورد انتخاب کنید' : 'Please select at least one'}', 'error');
                         return null;
                     }
                     
@@ -4554,7 +4554,7 @@
                     return selectedItems;
                 }
                 
-                // 覆盖添加
+                // overwriteAdd
                 if (overwriteSelectedBtn) {
                     overwriteSelectedBtn.addEventListener('click', async function() {
                         const selectedItems = getSelectedItems();
@@ -4566,7 +4566,7 @@
                         
                         overwriteSelectedBtn.disabled = true;
                         appendSelectedBtn.disabled = true;
-                        overwriteSelectedBtn.textContent = '${isFarsi ? 'در حال ذخیره...' : '保存中...'}';
+                        overwriteSelectedBtn.textContent = '${isFarsi ? 'در حال ذخیره...' : 'Saving...'}';
                         
                         try {
                             const configData = {
@@ -4576,18 +4576,18 @@
                                 socksConfig: document.getElementById('socksConfig').value
                             };
                             await saveConfig(configData);
-                            showStatus('${isFarsi ? 'موفقیت‌آمیز بود' : '已覆盖'} ' + selectedItems.length + ' ${isFarsi ? 'مورد و ذخیره شد' : '项并已保存'}', 'success');
+                            showStatus('${isFarsi ? 'موفقیت‌آمیز بود' : 'Overwritten'} ' + selectedItems.length + ' ${isFarsi ? 'مورد و ذخیره شد' : 'item(s) and saved'}', 'success');
                         } catch (err) {
-                            showStatus('${isFarsi ? 'خطا در ذخیره' : '保存失败'}: ' + err.message, 'error');
+                            showStatus('${isFarsi ? 'خطا در ذخیره' : 'Save failed'}: ' + err.message, 'error');
                         } finally {
                             overwriteSelectedBtn.disabled = false;
                             appendSelectedBtn.disabled = false;
-                            overwriteSelectedBtn.textContent = '${isFarsi ? '覆盖添加' : '覆盖添加'}';
+                            overwriteSelectedBtn.textContent = '${isFarsi ? 'overwriteAdd' : 'overwriteAdd'}';
                         }
                     });
                 }
                 
-                // 追加添加
+                // Append add
                 if (appendSelectedBtn) {
                     appendSelectedBtn.addEventListener('click', async function() {
                         const selectedItems = getSelectedItems();
@@ -4601,7 +4601,7 @@
                         
                         overwriteSelectedBtn.disabled = true;
                         appendSelectedBtn.disabled = true;
-                        appendSelectedBtn.textContent = '${isFarsi ? 'در حال ذخیره...' : '保存中...'}';
+                        appendSelectedBtn.textContent = '${isFarsi ? 'در حال ذخیره...' : 'Saving...'}';
                         
                         try {
                             const configData = {
@@ -4611,13 +4611,13 @@
                                 socksConfig: document.getElementById('socksConfig').value
                             };
                             await saveConfig(configData);
-                            showStatus('${isFarsi ? 'موفقیت‌آمیز بود' : '已追加'} ' + selectedItems.length + ' ${isFarsi ? 'مورد و ذخیره شد' : '项并已保存'}', 'success');
+                            showStatus('${isFarsi ? 'موفقیت‌آمیز بود' : 'Appended'} ' + selectedItems.length + ' ${isFarsi ? 'مورد و ذخیره شد' : 'item(s) and saved'}', 'success');
                         } catch (err) {
-                            showStatus('${isFarsi ? 'خطا در ذخیره' : '保存失败'}: ' + err.message, 'error');
+                            showStatus('${isFarsi ? 'خطا در ذخیره' : 'Save failed'}: ' + err.message, 'error');
                         } finally {
                             overwriteSelectedBtn.disabled = false;
                             appendSelectedBtn.disabled = false;
-                            appendSelectedBtn.textContent = '${isFarsi ? '追加添加' : '追加添加'}';
+                            appendSelectedBtn.textContent = '${isFarsi ? 'Append add' : 'Append add'}';
                         }
                     });
                 }
@@ -4635,74 +4635,74 @@
                 }
                 
                 const coloMap = {
-                    'SJC': '🇺🇸 圣何塞', 'LAX': '🇺🇸 洛杉矶', 'SEA': '🇺🇸 西雅图', 'SFO': '🇺🇸 旧金山', 'DFW': '🇺🇸 达拉斯',
-                    'ORD': '🇺🇸 芝加哥', 'IAD': '🇺🇸 华盛顿', 'ATL': '🇺🇸 亚特兰大', 'MIA': '🇺🇸 迈阿密', 'DEN': '🇺🇸 丹佛',
-                    'PHX': '🇺🇸 凤凰城', 'BOS': '🇺🇸 波士顿', 'EWR': '🇺🇸 纽瓦克', 'JFK': '🇺🇸 纽约', 'LAS': '🇺🇸 拉斯维加斯',
-                    'MSP': '🇺🇸 明尼阿波利斯', 'DTW': '🇺🇸 底特律', 'PHL': '🇺🇸 费城', 'CLT': '🇺🇸 夏洛特', 'SLC': '🇺🇸 盐湖城',
-                    'PDX': '🇺🇸 波特兰', 'SAN': '🇺🇸 圣地亚哥', 'TPA': '🇺🇸 坦帕', 'IAH': '🇺🇸 休斯顿', 'MCO': '🇺🇸 奥兰多',
-                    'AUS': '🇺🇸 奥斯汀', 'BNA': '🇺🇸 纳什维尔', 'RDU': '🇺🇸 罗利', 'IND': '🇺🇸 印第安纳波利斯', 'CMH': '🇺🇸 哥伦布',
-                    'MCI': '🇺🇸 堪萨斯城', 'OMA': '🇺🇸 奥马哈', 'ABQ': '🇺🇸 阿尔伯克基', 'OKC': '🇺🇸 俄克拉荷马城', 'MEM': '🇺🇸 孟菲斯',
-                    'JAX': '🇺🇸 杰克逊维尔', 'RIC': '🇺🇸 里士满', 'BUF': '🇺🇸 布法罗', 'PIT': '🇺🇸 匹兹堡', 'CLE': '🇺🇸 克利夫兰',
-                    'CVG': '🇺🇸 辛辛那提', 'MKE': '🇺🇸 密尔沃基', 'STL': '🇺🇸 圣路易斯', 'SAT': '🇺🇸 圣安东尼奥', 'HNL': '🇺🇸 檀香山',
-                    'ANC': '🇺🇸 安克雷奇', 'SMF': '🇺🇸 萨克拉门托', 'ONT': '🇺🇸 安大略', 'OAK': '🇺🇸 奥克兰',
-                    'HKG': '🇭🇰 香港', 'TPE': '🇹🇼 台北', 'TSA': '🇹🇼 台北松山', 'KHH': '🇹🇼 高雄',
-                    'NRT': '🇯🇵 东京成田', 'HND': '🇯🇵 东京羽田', 'KIX': '🇯🇵 大阪关西', 'ITM': '🇯🇵 大阪伊丹', 'NGO': '🇯🇵 名古屋',
-                    'FUK': '🇯🇵 福冈', 'CTS': '🇯🇵 札幌', 'OKA': '🇯🇵 冲绳',
-                    'ICN': '🇰🇷 首尔仁川', 'GMP': '🇰🇷 首尔金浦', 'PUS': '🇰🇷 釜山',
-                    'SIN': '🇸🇬 新加坡', 'BKK': '🇹🇭 曼谷', 'DMK': '🇹🇭 曼谷廊曼', 'KUL': '🇲🇾 吉隆坡', 'CGK': '🇮🇩 雅加达',
-                    'MNL': '🇵🇭 马尼拉', 'CEB': '🇵🇭 宿务', 'HAN': '🇻🇳 河内', 'SGN': '🇻🇳 胡志明', 'DAD': '🇻🇳 岘港',
-                    'RGN': '🇲🇲 仰光', 'PNH': '🇰🇭 金边', 'REP': '🇰🇭 暹粒', 'VTE': '🇱🇦 万象',
-                    'BOM': '🇮🇳 孟买', 'DEL': '🇮🇳 新德里', 'MAA': '🇮🇳 金奈', 'BLR': '🇮🇳 班加罗尔', 'CCU': '🇮🇳 加尔各答',
-                    'HYD': '🇮🇳 海得拉巴', 'AMD': '🇮🇳 艾哈迈达巴德', 'COK': '🇮🇳 科钦', 'PNQ': '🇮🇳 浦那', 'GOI': '🇮🇳 果阿',
-                    'CMB': '🇱🇰 科伦坡', 'DAC': '🇧🇩 达卡', 'KTM': '🇳🇵 加德满都', 'ISB': '🇵🇰 伊斯兰堡', 'KHI': '🇵🇰 卡拉奇', 'LHE': '🇵🇰 拉合尔',
-                    'LHR': '🇬🇧 伦敦希思罗', 'LGW': '🇬🇧 伦敦盖特威克', 'STN': '🇬🇧 伦敦斯坦斯特德', 'LTN': '🇬🇧 伦敦卢顿', 'MAN': '🇬🇧 曼彻斯特', 'EDI': '🇬🇧 爱丁堡', 'BHX': '🇬🇧 伯明翰',
-                    'CDG': '🇫🇷 巴黎戴高乐', 'ORY': '🇫🇷 巴黎奥利', 'MRS': '🇫🇷 马赛', 'LYS': '🇫🇷 里昂', 'NCE': '🇫🇷 尼斯',
-                    'FRA': '🇩🇪 法兰克福', 'MUC': '🇩🇪 慕尼黑', 'TXL': '🇩🇪 柏林', 'BER': '🇩🇪 柏林勃兰登堡', 'HAM': '🇩🇪 汉堡', 'DUS': '🇩🇪 杜塞尔多夫', 'CGN': '🇩🇪 科隆', 'STR': '🇩🇪 斯图加特',
-                    'AMS': '🇳🇱 阿姆斯特丹', 'BRU': '🇧🇪 布鲁塞尔', 'LUX': '🇱🇺 卢森堡',
-                    'ZRH': '🇨🇭 苏黎世', 'GVA': '🇨🇭 日内瓦', 'BSL': '🇨🇭 巴塞尔',
-                    'VIE': '🇦🇹 维也纳', 'PRG': '🇨🇿 布拉格', 'BUD': '🇭🇺 布达佩斯', 'WAW': '🇵🇱 华沙', 'KRK': '🇵🇱 克拉科夫',
-                    'MXP': '🇮🇹 米兰马尔彭萨', 'LIN': '🇮🇹 米兰利纳特', 'FCO': '🇮🇹 罗马', 'VCE': '🇮🇹 威尼斯', 'NAP': '🇮🇹 那不勒斯', 'FLR': '🇮🇹 佛罗伦萨', 'BGY': '🇮🇹 贝加莫',
-                    'MAD': '🇪🇸 马德里', 'BCN': '🇪🇸 巴塞罗那', 'PMI': '🇪🇸 帕尔马', 'AGP': '🇪🇸 马拉加', 'VLC': '🇪🇸 瓦伦西亚', 'SVQ': '🇪🇸 塞维利亚', 'BIO': '🇪🇸 毕尔巴鄂',
-                    'LIS': '🇵🇹 里斯本', 'OPO': '🇵🇹 波尔图', 'FAO': '🇵🇹 法鲁',
-                    'DUB': '🇮🇪 都柏林', 'CPH': '🇩🇰 哥本哈根', 'ARN': '🇸🇪 斯德哥尔摩', 'GOT': '🇸🇪 哥德堡',
-                    'OSL': '🇳🇴 奥斯陆', 'BGO': '🇳🇴 卑尔根', 'HEL': '🇫🇮 赫尔辛基', 'RIX': '🇱🇻 里加', 'TLL': '🇪🇪 塔林', 'VNO': '🇱🇹 维尔纽斯',
-                    'ATH': '🇬🇷 雅典', 'SKG': '🇬🇷 塞萨洛尼基', 'SOF': '🇧🇬 索非亚', 'OTP': '🇷🇴 布加勒斯特', 'BEG': '🇷🇸 贝尔格莱德', 'ZAG': '🇭🇷 萨格勒布', 'LJU': '🇸🇮 卢布尔雅那',
-                    'KBP': '🇺🇦 基辅', 'IEV': '🇺🇦 基辅茹良尼', 'ODS': '🇺🇦 敖德萨',
-                    'SVO': '🇷🇺 莫斯科谢列梅捷沃', 'DME': '🇷🇺 莫斯科多莫杰多沃', 'VKO': '🇷🇺 莫斯科伏努科沃', 'LED': '🇷🇺 圣彼得堡',
-                    'IST': '🇹🇷 伊斯坦布尔', 'SAW': '🇹🇷 伊斯坦布尔萨比哈', 'ESB': '🇹🇷 安卡拉', 'AYT': '🇹🇷 安塔利亚', 'ADB': '🇹🇷 伊兹密尔',
-                    'TLV': '🇮🇱 特拉维夫', 'AMM': '🇯🇴 安曼', 'BEY': '🇱🇧 贝鲁特', 'BAH': '🇧🇭 巴林', 'KWI': '🇰🇼 科威特',
-                    'DXB': '🇦🇪 迪拜', 'AUH': '🇦🇪 阿布扎比', 'SHJ': '🇦🇪 沙迦', 'DOH': '🇶🇦 多哈', 'MCT': '🇴🇲 马斯喀特',
-                    'RUH': '🇸🇦 利雅得', 'JED': '🇸🇦 吉达', 'DMM': '🇸🇦 达曼',
-                    'CAI': '🇪🇬 开罗', 'HBE': '🇪🇬 亚历山大', 'SSH': '🇪🇬 沙姆沙伊赫',
-                    'CMN': '🇲🇦 卡萨布兰卡', 'RAK': '🇲🇦 马拉喀什', 'TUN': '🇹🇳 突尼斯', 'ALG': '🇩🇿 阿尔及尔',
-                    'LOS': '🇳🇬 拉各斯', 'ABV': '🇳🇬 阿布贾', 'ACC': '🇬🇭 阿克拉', 'NBO': '🇰🇪 内罗毕', 'MBA': '🇰🇪 蒙巴萨', 'ADD': '🇪🇹 亚的斯亚贝巴', 'DAR': '🇹🇿 达累斯萨拉姆',
-                    'JNB': '🇿🇦 约翰内斯堡', 'CPT': '🇿🇦 开普敦', 'DUR': '🇿🇦 德班', 'HRE': '🇿🇼 哈拉雷', 'LUN': '🇿🇲 卢萨卡',
-                    'MRU': '🇲🇺 毛里求斯', 'SEZ': '🇸🇨 塞舌尔',
-                    'SYD': '🇦🇺 悉尼', 'MEL': '🇦🇺 墨尔本', 'BNE': '🇦🇺 布里斯班', 'PER': '🇦🇺 珀斯', 'ADL': '🇦🇺 阿德莱德', 'CBR': '🇦🇺 堪培拉', 'OOL': '🇦🇺 黄金海岸', 'CNS': '🇦🇺 凯恩斯',
-                    'AKL': '🇳🇿 奥克兰', 'WLG': '🇳🇿 惠灵顿', 'CHC': '🇳🇿 基督城', 'ZQN': '🇳🇿 皇后镇',
-                    'NAN': '🇫🇯 楠迪', 'PPT': '🇵🇫 帕皮提', 'GUM': '🇬🇺 关岛',
-                    'GRU': '🇧🇷 圣保罗瓜鲁柳斯', 'CGH': '🇧🇷 圣保罗孔戈尼亚斯', 'GIG': '🇧🇷 里约热内卢', 'BSB': '🇧🇷 巴西利亚', 'CNF': '🇧🇷 贝洛奥里藏特', 'POA': '🇧🇷 阿雷格里港', 'CWB': '🇧🇷 库里蒂巴', 'FOR': '🇧🇷 福塔莱萨', 'REC': '🇧🇷 累西腓', 'SSA': '🇧🇷 萨尔瓦多',
-                    'EZE': '🇦🇷 布宜诺斯艾利斯', 'AEP': '🇦🇷 布宜诺斯艾利斯城', 'COR': '🇦🇷 科尔多瓦', 'MDZ': '🇦🇷 门多萨',
-                    'SCL': '🇨🇱 圣地亚哥', 'LIM': '🇵🇪 利马', 'BOG': '🇨🇴 波哥大', 'MDE': '🇨🇴 麦德林', 'CLO': '🇨🇴 卡利',
-                    'UIO': '🇪🇨 基多', 'GYE': '🇪🇨 瓜亚基尔', 'CCS': '🇻🇪 加拉加斯', 'MVD': '🇺🇾 蒙得维的亚', 'ASU': '🇵🇾 亚松森',
-                    'PTY': '🇵🇦 巴拿马城', 'SJO': '🇨🇷 圣何塞', 'GUA': '🇬🇹 危地马拉城', 'SAL': '🇸🇻 圣萨尔瓦多', 'TGU': '🇭🇳 特古西加尔巴', 'MGA': '🇳🇮 马那瓜', 'BZE': '🇧🇿 伯利兹城',
-                    'MEX': '🇲🇽 墨西哥城', 'GDL': '🇲🇽 瓜达拉哈拉', 'MTY': '🇲🇽 蒙特雷', 'CUN': '🇲🇽 坎昆', 'TIJ': '🇲🇽 蒂华纳', 'SJD': '🇲🇽 圣何塞德尔卡沃',
-                    'YYZ': '🇨🇦 多伦多', 'YVR': '🇨🇦 温哥华', 'YUL': '🇨🇦 蒙特利尔', 'YYC': '🇨🇦 卡尔加里', 'YEG': '🇨🇦 埃德蒙顿', 'YOW': '🇨🇦 渥太华', 'YWG': '🇨🇦 温尼伯', 'YHZ': '🇨🇦 哈利法克斯',
-                    'HAV': '🇨🇺 哈瓦那', 'SJU': '🇵🇷 圣胡安', 'SDQ': '🇩🇴 圣多明各', 'PAP': '🇭🇹 太子港', 'KIN': '🇯🇲 金斯顿', 'NAS': '🇧🇸 拿骚', 'MBJ': '🇯🇲 蒙特哥贝'
+                    'SJC': '🇺🇸 San Jose', 'LAX': '🇺🇸 Los Angeles', 'SEA': '🇺🇸 Seattle', 'SFO': '🇺🇸 San Francisco', 'DFW': '🇺🇸 Dallas',
+                    'ORD': '🇺🇸 Chicago', 'IAD': '🇺🇸 Washington', 'ATL': '🇺🇸 Atlanta', 'MIA': '🇺🇸 Miami', 'DEN': '🇺🇸 Denver',
+                    'PHX': '🇺🇸 Phoenix', 'BOS': '🇺🇸 Boston', 'EWR': '🇺🇸 Newark', 'JFK': '🇺🇸 New York', 'LAS': '🇺🇸 Las Vegas',
+                    'MSP': '🇺🇸 Minneapolis', 'DTW': '🇺🇸 Detroit', 'PHL': '🇺🇸 Philadelphia', 'CLT': '🇺🇸 Charlotte', 'SLC': '🇺🇸 Salt Lake City',
+                    'PDX': '🇺🇸 Portland', 'SAN': '🇺🇸 Santiago', 'TPA': '🇺🇸 Tampa', 'IAH': '🇺🇸 Houston', 'MCO': '🇺🇸 Orlando',
+                    'AUS': '🇺🇸 Austin', 'BNA': '🇺🇸 Nashville', 'RDU': '🇺🇸 Raleigh', 'IND': '🇺🇸 Indianapolis', 'CMH': '🇺🇸 Columbus',
+                    'MCI': '🇺🇸 Kansas City', 'OMA': '🇺🇸 Omaha', 'ABQ': '🇺🇸 Albuquerque', 'OKC': '🇺🇸 Oklahoma City', 'MEM': '🇺🇸 Memphis',
+                    'JAX': '🇺🇸 Jacksonville', 'RIC': '🇺🇸 Richmond', 'BUF': '🇺🇸 Buffalo', 'PIT': '🇺🇸 Pittsburgh', 'CLE': '🇺🇸 Cleveland',
+                    'CVG': '🇺🇸 Cincinnati', 'MKE': '🇺🇸 Milwaukee', 'STL': '🇺🇸 Saint Louis', 'SAT': '🇺🇸 San Antonio', 'HNL': '🇺🇸 Honolulu',
+                    'ANC': '🇺🇸 Anchorage', 'SMF': '🇺🇸 Sacramento', 'ONT': '🇺🇸 Ontario', 'OAK': '🇺🇸 Auckland',
+                    'HKG': '🇭🇰 Hong Kong', 'TPE': '🇹🇼 Taipei', 'TSA': '🇹🇼 Taipei Songshan', 'KHH': '🇹🇼 Kaohsiung',
+                    'NRT': '🇯🇵 Tokyo Narita', 'HND': '🇯🇵 Tokyo Haneda', 'KIX': '🇯🇵 Osaka Kansai', 'ITM': '🇯🇵 Osaka Itami', 'NGO': '🇯🇵 Nagoya',
+                    'FUK': '🇯🇵 Fukuoka', 'CTS': '🇯🇵 Sapporo', 'OKA': '🇯🇵 Okinawa',
+                    'ICN': '🇰🇷 Seoul Incheon', 'GMP': '🇰🇷 Seoul Gimpo', 'PUS': '🇰🇷 Busan',
+                    'SIN': '🇸🇬 Singapore', 'BKK': '🇹🇭 Bangkok', 'DMK': '🇹🇭 Bangkok Don Mueang', 'KUL': '🇲🇾 Kuala Lumpur', 'CGK': '🇮🇩 Jakarta',
+                    'MNL': '🇵🇭 Manila', 'CEB': '🇵🇭 Cebu', 'HAN': '🇻🇳 Hanoi', 'SGN': '🇻🇳 Ho Chi Minh', 'DAD': '🇻🇳 Da Nang',
+                    'RGN': '🇲🇲 Yangon', 'PNH': '🇰🇭 Phnom Penh', 'REP': '🇰🇭 Siem Reap', 'VTE': '🇱🇦 Vientiane',
+                    'BOM': '🇮🇳 Mumbai', 'DEL': '🇮🇳 New Delhi', 'MAA': '🇮🇳 Chennai', 'BLR': '🇮🇳 Bangalore', 'CCU': '🇮🇳 Kolkata',
+                    'HYD': '🇮🇳 Hyderabad', 'AMD': '🇮🇳 Ahmedabad', 'COK': '🇮🇳 Kochi', 'PNQ': '🇮🇳 Pune', 'GOI': '🇮🇳 Goa',
+                    'CMB': '🇱🇰 Colombo', 'DAC': '🇧🇩 Dhaka', 'KTM': '🇳🇵 Kathmandu', 'ISB': '🇵🇰 Islamabad', 'KHI': '🇵🇰 Karachi', 'LHE': '🇵🇰 Lahore',
+                    'LHR': '🇬🇧 London Heathrow', 'LGW': '🇬🇧 London Gatwick', 'STN': '🇬🇧 London Stansted', 'LTN': '🇬🇧 London Luton', 'MAN': '🇬🇧 Manchester', 'EDI': '🇬🇧 Edinburgh', 'BHX': '🇬🇧 Birmingham',
+                    'CDG': '🇫🇷 Paris Charles de Gaulle', 'ORY': '🇫🇷 Paris Orly', 'MRS': '🇫🇷 Marseille', 'LYS': '🇫🇷 Lyon', 'NCE': '🇫🇷 Nice',
+                    'FRA': '🇩🇪 Frankfurt', 'MUC': '🇩🇪 Munich', 'TXL': '🇩🇪 Berlin', 'BER': '🇩🇪 Berlin Brandenburg', 'HAM': '🇩🇪 Hamburg', 'DUS': '🇩🇪 Düsseldorf', 'CGN': '🇩🇪 Cologne', 'STR': '🇩🇪 Stuttgart',
+                    'AMS': '🇳🇱 Amsterdam', 'BRU': '🇧🇪 Brussels', 'LUX': '🇱🇺 Luxembourg',
+                    'ZRH': '🇨🇭 Zurich', 'GVA': '🇨🇭 Geneva', 'BSL': '🇨🇭 Basel',
+                    'VIE': '🇦🇹 Vienna', 'PRG': '🇨🇿 Prague', 'BUD': '🇭🇺 Budapest', 'WAW': '🇵🇱 Warsaw', 'KRK': '🇵🇱 Krakow',
+                    'MXP': '🇮🇹 Milan Malpensa', 'LIN': '🇮🇹 Milan Linate', 'FCO': '🇮🇹 Rome', 'VCE': '🇮🇹 Venice', 'NAP': '🇮🇹 Naples', 'FLR': '🇮🇹 Florence', 'BGY': '🇮🇹 Bergamo',
+                    'MAD': '🇪🇸 Madrid', 'BCN': '🇪🇸 Barcelona', 'PMI': '🇪🇸 Palma', 'AGP': '🇪🇸 Málaga', 'VLC': '🇪🇸 Valencia', 'SVQ': '🇪🇸 Seville', 'BIO': '🇪🇸 Bilbao',
+                    'LIS': '🇵🇹 Lisbon', 'OPO': '🇵🇹 Porto', 'FAO': '🇵🇹 Faro',
+                    'DUB': '🇮🇪 Dublin', 'CPH': '🇩🇰 Copenhagen', 'ARN': '🇸🇪 Stockholm', 'GOT': '🇸🇪 Gothenburg',
+                    'OSL': '🇳🇴 Oslo', 'BGO': '🇳🇴 Bergen', 'HEL': '🇫🇮 Helsinki', 'RIX': '🇱🇻 Riga', 'TLL': '🇪🇪 Tallinn', 'VNO': '🇱🇹 Vilnius',
+                    'ATH': '🇬🇷 Athens', 'SKG': '🇬🇷 Thessaloniki', 'SOF': '🇧🇬 Sofia', 'OTP': '🇷🇴 Bucharest', 'BEG': '🇷🇸 Belgrade', 'ZAG': '🇭🇷 Zagreb', 'LJU': '🇸🇮 Ljubljana',
+                    'KBP': '🇺🇦 Kyiv', 'IEV': '🇺🇦 Kyiv Zhuliany', 'ODS': '🇺🇦 Odessa',
+                    'SVO': '🇷🇺 Moscow Sheremetyevo', 'DME': '🇷🇺 Moscow Domodedovo', 'VKO': '🇷🇺 Moscow Vnukovo', 'LED': '🇷🇺 Saint Petersburg',
+                    'IST': '🇹🇷 Istanbul', 'SAW': '🇹🇷 Istanbul Sabiha', 'ESB': '🇹🇷 Ankara', 'AYT': '🇹🇷 Antalya', 'ADB': '🇹🇷 Izmir',
+                    'TLV': '🇮🇱 Tel Aviv', 'AMM': '🇯🇴 Amman', 'BEY': '🇱🇧 Beirut', 'BAH': '🇧🇭 Bahrain', 'KWI': '🇰🇼 Kuwait',
+                    'DXB': '🇦🇪 Dubai', 'AUH': '🇦🇪 Abu Dhabi', 'SHJ': '🇦🇪 Sharjah', 'DOH': '🇶🇦 Doha', 'MCT': '🇴🇲 Muscat',
+                    'RUH': '🇸🇦 Riyadh', 'JED': '🇸🇦 Jeddah', 'DMM': '🇸🇦 Dammam',
+                    'CAI': '🇪🇬 Cairo', 'HBE': '🇪🇬 Alexandria', 'SSH': '🇪🇬 Sharm El Sheikh',
+                    'CMN': '🇲🇦 Casablanca', 'RAK': '🇲🇦 Marrakech', 'TUN': '🇹🇳 Tunis', 'ALG': '🇩🇿 Algiers',
+                    'LOS': '🇳🇬 Lagos', 'ABV': '🇳🇬 Abuja', 'ACC': '🇬🇭 Accra', 'NBO': '🇰🇪 Nairobi', 'MBA': '🇰🇪 Mombasa', 'ADD': '🇪🇹 Addis Ababa', 'DAR': '🇹🇿 Dar es Salaam',
+                    'JNB': '🇿🇦 Johannesburg', 'CPT': '🇿🇦 Cape Town', 'DUR': '🇿🇦 Durban', 'HRE': '🇿🇼 Harare', 'LUN': '🇿🇲 Lusaka',
+                    'MRU': '🇲🇺 Mauritius', 'SEZ': '🇸🇨 Seychelles',
+                    'SYD': '🇦🇺 Sydney', 'MEL': '🇦🇺 Melbourne', 'BNE': '🇦🇺 Brisbane', 'PER': '🇦🇺 Perth', 'ADL': '🇦🇺 Adelaide', 'CBR': '🇦🇺 Canberra', 'OOL': '🇦🇺 Gold Coast', 'CNS': '🇦🇺 Cairns',
+                    'AKL': '🇳🇿 Auckland', 'WLG': '🇳🇿 Wellington', 'CHC': '🇳🇿 Christchurch', 'ZQN': '🇳🇿 Queenstown',
+                    'NAN': '🇫🇯 Nadi', 'PPT': '🇵🇫 Papeete', 'GUM': '🇬🇺 Guam',
+                    'GRU': '🇧🇷 São Paulo Guarulhos', 'CGH': '🇧🇷 São Paulo Congonhas', 'GIG': '🇧🇷 Rio de Janeiro', 'BSB': '🇧🇷 Brasília', 'CNF': '🇧🇷 Belo Horizonte', 'POA': '🇧🇷 Porto Alegre', 'CWB': '🇧🇷 Curitiba', 'FOR': '🇧🇷 Fortaleza', 'REC': '🇧🇷 Recife', 'SSA': '🇧🇷 Salvador',
+                    'EZE': '🇦🇷 Buenos Aires', 'AEP': '🇦🇷 Buenos Aires City', 'COR': '🇦🇷 Córdoba', 'MDZ': '🇦🇷 Mendoza',
+                    'SCL': '🇨🇱 Santiago', 'LIM': '🇵🇪 Lima', 'BOG': '🇨🇴 Bogotá', 'MDE': '🇨🇴 Medellín', 'CLO': '🇨🇴 Cali',
+                    'UIO': '🇪🇨 Quito', 'GYE': '🇪🇨 Guayaquil', 'CCS': '🇻🇪 Caracas', 'MVD': '🇺🇾 Montevideo', 'ASU': '🇵🇾 Asunción',
+                    'PTY': '🇵🇦 Panama City', 'SJO': '🇨🇷 San Jose', 'GUA': '🇬🇹 Guatemala City', 'SAL': '🇸🇻 San Salvador', 'TGU': '🇭🇳 Tegucigalpa', 'MGA': '🇳🇮 Managua', 'BZE': '🇧🇿 Belize City',
+                    'MEX': '🇲🇽 Mexico City', 'GDL': '🇲🇽 Guadalajara', 'MTY': '🇲🇽 Monterrey', 'CUN': '🇲🇽 Cancún', 'TIJ': '🇲🇽 Tijuana', 'SJD': '🇲🇽 San José del Cabo',
+                    'YYZ': '🇨🇦 Toronto', 'YVR': '🇨🇦 Vancouver', 'YUL': '🇨🇦 Montreal', 'YYC': '🇨🇦 Calgary', 'YEG': '🇨🇦 Edmonton', 'YOW': '🇨🇦 Ottawa', 'YWG': '🇨🇦 Winnipeg', 'YHZ': '🇨🇦 Halifax',
+                    'HAV': '🇨🇺 Havana', 'SJU': '🇵🇷 San Juan', 'SDQ': '🇩🇴 Santo Domingo', 'PAP': '🇭🇹 Port-au-Prince', 'KIN': '🇯🇲 Kingston', 'NAS': '🇧🇸 Nassau', 'MBJ': '🇯🇲 Montego Bay'
                 };
                 
                 function getColoName(colo) {
                     return coloMap[colo] || colo;
                 }
                 
-                // 城市筛选相关函数
+                // CityFilter related functions
                 const cityFilterContainer = document.getElementById('cityFilterContainer');
                 const cityCheckboxesContainer = document.getElementById('cityCheckboxesContainer');
                 
                 function updateCityFilter() {
                     if (!cityFilterContainer || !cityCheckboxesContainer) return;
                     
-                    // 从测试结果中提取所有可用的城市
+                    // Extract all available cities from test results
                     const cityMap = new Map();
                     testResults.forEach((result, index) => {
                         if (result.success && result.colo) {
@@ -4726,7 +4726,7 @@
                     cityFilterContainer.style.display = 'block';
                     cityCheckboxesContainer.innerHTML = '';
                     
-                    // 按城市名称排序
+                    // Sort by city name
                     const cities = Array.from(cityMap.values()).sort((a, b) => a.name.localeCompare(b.name));
                     
                     cities.forEach(city => {
@@ -4750,12 +4750,12 @@
                         checkbox.addEventListener('change', filterResultsByCity);
                     });
                     
-                    // 监听筛选模式变化
+                    // Listen for filter mode changes
                     const filterModeRadios = document.querySelectorAll('input[name="cityFilterMode"]');
                     filterModeRadios.forEach(radio => {
                         radio.addEventListener('change', function() {
                             if (this.value === 'all') {
-                                // 切换到"全部城市"模式时，自动选中所有城市复选框
+                                // Switch to"All Cities"when in mode，Automatically select all city checkboxes
                                 const cityCheckboxes = cityCheckboxesContainer.querySelectorAll('input[type="checkbox"]');
                                 cityCheckboxes.forEach(cb => {
                                     cb.checked = true;
@@ -4775,7 +4775,7 @@
                     const cityCheckboxes = cityCheckboxesContainer.querySelectorAll('input[type="checkbox"]');
                     
                     if (filterMode === 'fastest10') {
-                        // 只选择最快的10个
+                        // Only select fastestof10 item(s)
                         const sortedResults = testResults
                             .map((result, index) => ({ result, index }))
                             .filter(item => item.result.success)
@@ -4796,10 +4796,10 @@
                             }
                         });
                         
-                        // 禁用城市复选框
+                        // Disable city checkboxes
                         cityCheckboxes.forEach(cb => cb.disabled = true);
                     } else {
-                        // 根据选中的城市筛选
+                        // Filter by selected cities
                         const selectedCities = new Set();
                         cityCheckboxes.forEach(cb => {
                             if (cb.checked) {
@@ -4807,7 +4807,7 @@
                             }
                         });
                         
-                        // 如果所有城市都被选中（或没有选中任何城市），显示所有结果
+                        // If all cities are selected（ornot selectedinanyCity），Show all results
                         const allChecked = cityCheckboxes.length > 0 && selectedCities.size === cityCheckboxes.length;
                         const noneChecked = selectedCities.size === 0;
                         
@@ -4816,29 +4816,29 @@
                             const checkbox = item.querySelector('input[type="checkbox"]');
                             if (allChecked || noneChecked || selectedCities.has(colo)) {
                                 item.style.display = 'flex';
-                                // 同步更新结果项复选框的选中状态
+                                // syncUpdateresult item checkboxesofselectinStatus
                                 if (checkbox) {
                                     if (allChecked) {
-                                        // 所有城市都选中时，所有结果项复选框都选中
+                                        // When all cities are selected，All result checkboxes checked
                                         checkbox.checked = true;
                                     } else if (noneChecked) {
-                                        // 没有选中任何城市时，所有结果项复选框都取消选中
+                                        // When no city is selected，All result checkboxes unchecked
                                         checkbox.checked = false;
                                     } else {
-                                        // 根据城市选择状态同步复选框
+                                        // Sync checkboxes based on city selection status
                                         checkbox.checked = selectedCities.has(colo);
                                     }
                                 }
                             } else {
                                 item.style.display = 'none';
-                                // 取消选中隐藏的结果项复选框
+                                // Uncheckinhiddenofresult item checkboxes
                                 if (checkbox) {
                                     checkbox.checked = false;
                                 }
                             }
                         });
                         
-                        // 启用城市复选框
+                        // Enable city checkboxes
                         cityCheckboxes.forEach(cb => cb.disabled = false);
                     }
                 }
@@ -4898,7 +4898,7 @@
                         
                         return { success: true, latency: latency, colo: colo, testUrl: testUrl };
                     } catch (error) {
-                        const errorMsg = error.name === 'AbortError' ? '${isFarsi ? 'زمان تمام شد' : '超时'}' : error.message;
+                        const errorMsg = error.name === 'AbortError' ? '${isFarsi ? 'زمان تمام شد' : 'Timeout'}' : error.message;
                         console.log('[LatencyTest] Error:', errorMsg, 'URL:', testUrl);
                         return { success: false, latency: -1, error: errorMsg, colo: '', testUrl: testUrl };
                     }
@@ -5604,7 +5604,7 @@
                 const wsNodeName = `${nodeName}-${port}-WS-TLS`;
                 let link = `${proto}://${user}@${item.ip}:${port}?encryption=none&security=tls&sni=${workerDomain}&fp=${enableECH ? 'chrome' : 'randomized'}&type=ws&host=${workerDomain}&path=${wsPath}`;
                 
-                // 如果启用了ECH，添加ech参数（ECH需要伪装成Chrome浏览器）
+                // If ECH is enabled, add ech parameter (ECH needs to masquerade as Chrome browser)
                 if (enableECH) {
                     const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
                     const echDomain = customECHDomain || 'cloudflare-ech.com';
@@ -5625,7 +5625,7 @@
                 const wsNodeName = `${nodeName}-${port}-WS-TLS`;
                 let link = `${proto}://${user}@${item.ip}:${port}?encryption=none&security=tls&sni=${workerDomain}&fp=${enableECH ? 'chrome' : 'randomized'}&type=ws&host=${workerDomain}&path=${wsPath}`;
                 
-                // 如果启用了ECH，添加ech参数（ECH需要伪装成Chrome浏览器）
+                // If ECH is enabled, add ech parameter (ECH needs to masquerade as Chrome browser)
                 if (enableECH) {
                     const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
                     const echDomain = customECHDomain || 'cloudflare-ech.com';
@@ -5663,7 +5663,7 @@
                 mode: 'stream-one'
             });
             
-            // 如果启用了ECH，添加ech参数（ECH需要伪装成Chrome浏览器）
+            // If ECH is enabled, add ech parameter (ECH needs to masquerade as Chrome browser)
             if (enableECH) {
                 const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
                 const echDomain = customECHDomain || 'cloudflare-ech.com';
@@ -5696,7 +5696,7 @@
                 const wsNodeName = `${nodeName}-${port}-${atob('VHJvamFu')}-WS-TLS`;
                 let link = `${atob('dHJvamFuOi8v')}${password}@${item.ip}:${port}?security=tls&sni=${workerDomain}&fp=chrome&type=ws&host=${workerDomain}&path=${wsPath}`;
                 
-                // 如果启用了ECH，添加ech参数（ECH需要伪装成Chrome浏览器）
+                // If ECH is enabled, add ech parameter (ECH needs to masquerade as Chrome browser)
                 if (enableECH) {
                     const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
                     const echDomain = customECHDomain || 'cloudflare-ech.com';
@@ -5717,7 +5717,7 @@
                 const wsNodeName = `${nodeName}-${port}-${atob('VHJvamFu')}-WS-TLS`;
                 let link = `${atob('dHJvamFuOi8v')}${password}@${item.ip}:${port}?security=tls&sni=${workerDomain}&fp=chrome&type=ws&host=${workerDomain}&path=${wsPath}`;
                 
-                // 如果启用了ECH，添加ech参数（ECH需要伪装成Chrome浏览器）
+                // If ECH is enabled, add ech parameter (ECH needs to masquerade as Chrome browser)
                 if (enableECH) {
                     const dnsServer = customDNS || 'https://dns.joeyblog.eu.org/joeyblog';
                     const echDomain = customECHDomain || 'cloudflare-ech.com';
@@ -5736,7 +5736,7 @@
             
             if (!kvStore) {
                 return new Response(JSON.stringify({
-                    error: 'KV存储未配置',
+                    error: 'KVStore not configured',
                     kvEnabled: false
                 }), {
                     status: 503,
@@ -5755,7 +5755,7 @@
             if (!kvStore) {
                 return new Response(JSON.stringify({
                     success: false,
-                    message: 'KV存储未配置，无法保存配置'
+                    message: 'KVStore not configured，Cannot save configuration'
                 }), {
                     status: 503,
                     headers: { 'Content-Type': 'application/json' }
@@ -5831,7 +5831,7 @@
                 
                 return new Response(JSON.stringify({
                     success: true,
-                    message: '配置已保存',
+                    message: 'Configuration saved',
                     config: kvConfig
                 }), {
                     headers: { 'Content-Type': 'application/json' }
@@ -5840,7 +5840,7 @@
                 
                 return new Response(JSON.stringify({
                     success: false,
-                    message: '保存配置失败: ' + error.message
+                    message: 'Failed to save configuration: ' + error.message
                 }), {
                     status: 500,
                     headers: { 'Content-Type': 'application/json' }
@@ -5859,8 +5859,8 @@
         if (!kvStore) {
             return new Response(JSON.stringify({
                 success: false,
-                error: 'KV存储未配置',
-                message: '需要配置KV存储才能使用此功能'
+                error: 'KVStore not configured',
+                message: 'Need configurationKVStore is required to use this feature'
             }), {
                 status: 503,
                 headers: { 'Content-Type': 'application/json' }
@@ -5871,8 +5871,8 @@
         if (!ae) {
             return new Response(JSON.stringify({
                 success: false,
-                error: 'API功能未启用',
-                message: '出于安全考虑，优选IP API功能默认关闭。请在配置管理页面开启"允许API管理"选项后使用。'
+                error: 'APIFeature not enabled',
+                message: 'For security reasons，PreferredIP APIFeature disabled by default。Please enable in configuration management page"AllowAPIManagement"Use after option。'
             }), {
                 status: 403,
                 headers: { 'Content-Type': 'application/json' }
@@ -5902,8 +5902,8 @@
                 if (ipsToAdd.length === 0) {
                     return new Response(JSON.stringify({
                         success: false,
-                        error: '请求数据为空',
-                        message: '请提供IP数据'
+                        error: 'Request data is empty',
+                        message: 'Please provideIPData'
                     }), {
                         status: 400,
                         headers: { 'Content-Type': 'application/json' }
@@ -5920,15 +5920,15 @@
                 for (const item of ipsToAdd) {
                     
                     if (!item.ip) {
-                        errors.push({ ip: '未知', reason: 'IP地址是必需的' });
+                        errors.push({ ip: 'Unknown', reason: 'IPAddress is required' });
                         continue;
                     }
                     
                     const port = item.port || 443;
-                    const name = item.name || `API优选-${item.ip}:${port}`;
+                    const name = item.name || `APIPreferred-${item.ip}:${port}`;
                     
                     if (!isValidIP(item.ip) && !isValidDomain(item.ip)) {
-                        errors.push({ ip: item.ip, reason: '无效的IP或域名格式' });
+                        errors.push({ ip: item.ip, reason: 'InvalidIPorDomainFormat' });
                         continue;
                     }
                     
@@ -5937,7 +5937,7 @@
                     );
                     
                     if (exists) {
-                        skippedIPs.push({ ip: item.ip, port: port, reason: '已存在' });
+                        skippedIPs.push({ ip: item.ip, port: port, reason: 'Already exists' });
                         continue;
                     }
                     
@@ -5960,7 +5960,7 @@
                 
                 return new Response(JSON.stringify({
                     success: addedIPs.length > 0,
-                    message: `成功添加 ${addedIPs.length} 个IP`,
+                    message: `Successfully added ${addedIPs.length}  item(s)IP`,
                     added: addedIPs.length,
                     skipped: skippedIPs.length,
                     errors: errors.length,
@@ -5988,7 +5988,7 @@
                     
                     return new Response(JSON.stringify({
                         success: true,
-                        message: `已清空所有优选IP，共删除 ${deletedCount} 个`,
+                        message: `Cleared allPreferredIP，Total deleted ${deletedCount}  item(s)`,
                         deletedCount: deletedCount
                     }), {
                         headers: { 'Content-Type': 'application/json' }
@@ -5998,8 +5998,8 @@
                 if (!body.ip) {
                     return new Response(JSON.stringify({
                         success: false,
-                        error: 'IP地址是必需的',
-                        message: '请提供要删除的ip字段，或使用 {"all": true} 清空所有'
+                        error: 'IPAddress is required',
+                        message: 'Please provide to deleteipfield，oruse {"all": true} Clear all'
                     }), {
                         status: 400,
                         headers: { 'Content-Type': 'application/json' }
@@ -6019,8 +6019,8 @@
                 if (filteredIPs.length === initialLength) {
                     return new Response(JSON.stringify({
                         success: false,
-                        error: '优选IP不存在',
-                        message: `${body.ip}:${port} 未找到`
+                        error: 'PreferredIPDoes not exist',
+                        message: `${body.ip}:${port} notFound`
                     }), {
                         status: 404,
                         headers: { 'Content-Type': 'application/json' }
@@ -6033,7 +6033,7 @@
                 
                 return new Response(JSON.stringify({
                     success: true,
-                    message: '优选IP已删除',
+                    message: 'PreferredIPDeleted',
                     deleted: { ip: body.ip, port: port }
                 }), {
                     headers: { 'Content-Type': 'application/json' }
@@ -6042,8 +6042,8 @@
             } else {
                 return new Response(JSON.stringify({
                     success: false,
-                    error: '不支持的请求方法',
-                    message: '支持的方法: GET, POST, DELETE'
+                    error: 'Unsupported request method',
+                    message: 'Supported methods: GET, POST, DELETE'
                 }), {
                     status: 405,
                     headers: { 'Content-Type': 'application/json' }
@@ -6052,7 +6052,7 @@
         } catch (error) {
             return new Response(JSON.stringify({
                 success: false,
-                error: '处理请求失败',
+                error: 'ProcessRequest failed',
                 message: error.message
             }), {
                 status: 500,
@@ -6125,7 +6125,7 @@
             enableECH = echControl === 'yes' || echControl === true || echControl === 'true';
         }
         
-        // 更新自定义DNS和ECH域名
+        // UpdateCustomDNSandECHDomain
         const customDNSValue = getConfigValue('customDNS', '');
         if (customDNSValue && customDNSValue.trim()) {
             customDNS = customDNSValue.trim();
@@ -6140,13 +6140,13 @@
             customECHDomain = 'cloudflare-ech.com';
         }
         
-        // 如果启用了ECH，自动启用仅TLS模式（避免80端口干扰）
-        // ECH需要TLS才能工作，所以必须禁用非TLS节点
+        // If ECH is enabled, automatically enable TLS-only mode (avoid port 80 interference)
+        // ECH requires TLS to work, so non-TLS nodes must be disabled
         if (enableECH) {
             disableNonTLS = true;
         }
         
-        // 检查dkby配置（如果手动设置了dkby=yes，也会启用仅TLS）
+        // CheckdkbyConfiguration（If manually setdkby=yes，will also enable onlyTLS）
         const dkbyControl = getConfigValue('dkby', '');
         if (dkbyControl && dkbyControl.toLowerCase() === 'yes') {
             disableNonTLS = true;
@@ -6211,7 +6211,7 @@
                     const { address, port } = parseAddressAndPort(addressPart);
                     
                     if (!nodeName) {
-                        nodeName = '自定义优选-' + address + (port ? ':' + port : '');
+                        nodeName = 'Custom Preferred-' + address + (port ? ':' + port : '');
                     }
                     
                     if (isValidIP(address)) {
@@ -6359,10 +6359,10 @@
                 } else {
                     const headers = lines[0].split(',').map(h => h.trim());
                     const dataLines = lines.slice(1);
-                    if (headers.includes('IP地址') && headers.includes('端口') && headers.includes('数据中心')) {
-                        const ipIdx = headers.indexOf('IP地址'), portIdx = headers.indexOf('端口');
-                        const remarkIdx = headers.indexOf('国家') > -1 ? headers.indexOf('国家') :
-                            headers.indexOf('城市') > -1 ? headers.indexOf('城市') : headers.indexOf('数据中心');
+                    if (headers.includes('IPAddress') && headers.includes('Port') && headers.includes('Data Center')) {
+                        const ipIdx = headers.indexOf('IPAddress'), portIdx = headers.indexOf('Port');
+                        const remarkIdx = headers.indexOf('Country') > -1 ? headers.indexOf('Country') :
+                            headers.indexOf('City') > -1 ? headers.indexOf('City') : headers.indexOf('Data Center');
                         const tlsIdx = headers.indexOf('TLS');
                         dataLines.forEach(line => {
                             const cols = line.split(',').map(c => c.trim());
@@ -6370,15 +6370,15 @@
                             const wrappedIP = IPV6_PATTERN.test(cols[ipIdx]) ? `[${cols[ipIdx]}]` : cols[ipIdx];
                             results.add(`${wrappedIP}:${cols[portIdx]}#${cols[remarkIdx]}`);
                         });
-                    } else if (headers.some(h => h.includes('IP')) && headers.some(h => h.includes('延迟')) && headers.some(h => h.includes('下载速度'))) {
+                    } else if (headers.some(h => h.includes('IP')) && headers.some(h => h.includes('latency')) && headers.some(h => h.includes('Download Speed'))) {
                         const ipIdx = headers.findIndex(h => h.includes('IP'));
-                        const delayIdx = headers.findIndex(h => h.includes('延迟'));
-                        const speedIdx = headers.findIndex(h => h.includes('下载速度'));
+                        const delayIdx = headers.findIndex(h => h.includes('latency'));
+                        const speedIdx = headers.findIndex(h => h.includes('Download Speed'));
                         const port = new URL(url).searchParams.get('port') || defaultPort;
                         dataLines.forEach(line => {
                             const cols = line.split(',').map(c => c.trim());
                             const wrappedIP = IPV6_PATTERN.test(cols[ipIdx]) ? `[${cols[ipIdx]}]` : cols[ipIdx];
-                            results.add(`${wrappedIP}:${port}#CF优选 ${cols[delayIdx]}ms ${cols[speedIdx]}MB/s`);
+                            results.add(`${wrappedIP}:${port}#CFPreferred ${cols[delayIdx]}ms ${cols[speedIdx]}MB/s`);
                         });
                     }
                 }
