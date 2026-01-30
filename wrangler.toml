@@ -3,17 +3,5 @@ main = "src/worker.js"
 compatibility_date = "2026-01-30"
 compatibility_flags = ["nodejs_compat"]
 
-# For Cloudflare Pages deployment (if using)
-[build]
-command = "npm run deploy"
-
-[deployment]
-env = "production"
-
-# If using custom domain
-[[routes]]
-pattern = "vpn.sdbuild.me"
-custom_domain = true
-
 # OR for workers.dev domain
 workers_dev = true
