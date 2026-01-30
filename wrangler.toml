@@ -1,7 +1,6 @@
 name = "vless-vpn"
 main = "src/worker.js"
-compatibility_date = "2026-01-30"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2026-01-03"
 
 # OR for workers.dev domain
 workers_dev = true
